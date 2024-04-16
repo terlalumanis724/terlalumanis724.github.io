@@ -4,7 +4,7 @@ title: "A lot of people would say sexy is about the body"
 permalink: /tm2
 ---
 
-<details><summary><h2>But to me, sexy is a woman with confidence</h2></summary>
+<details><summary><h2>But to me sexy is a woman with confidence</h2></summary>
 <div class="jontor" loading="lazy">
 <script src="https://rawgit.com/rezamuhamad/rakinfo/master/sitemap.js"></script>
 <script src="https://www.xselebgram.xyz/feeds/posts/default/?start-index=999&max-results=1000&amp;alt=json-in-script&amp;callback=rak_info_Load"></script>

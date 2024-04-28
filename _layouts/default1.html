@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="{{ site.baseurl }}/assets/images/logo.png">
+
+
+{% seo %}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
+<link href="{{ site.baseurl }}/assets/css/screen.css" rel="stylesheet">
+
+<link href="{{ site.baseurl }}/assets/css/main.css" rel="stylesheet">
+
+<script src="{{ site.baseurl }}/assets/js/jquery.min.js"></script>
+<style type="text/css">
+.bcd140526_post_feed li.item {
+    display: block;
+    clear: both; 
+height: auto;
+    margin: 15px 0 0 0;
+    padding: 15px 0 0 0;
+    border-top: 1px dotted #BBB;
+}
+.bcd140526_post_feed ul {
+    margin: 0;
+ height: auto;
+    padding: 0;
+}
+.bcd140526_post_feed li.item.item-0 {
+    margin: 0;
+    padding: 0; 
+height: auto;
+    border: none;
+}
+.bcd140526_post_feed li.item h3.title {
+    display: block;
+ height: auto;
+    margin: 0 0 5px 0;
+}
+
+.bcd140526_post_feed li.item div.meta {
+    font-size: 11px;
+ height: auto;
+    color: #999;
+	margin: 0 0 5px 0;
+}
+.bcd140526_post_feed li.item div.meta .meta-item {
+    display: inline-block;
+	*display: inline;
+	zoom: 1;
+    margin: 0 1em 0 0;
+ height: auto;
+}
+.bcd140526_post_feed li.item p.snippet {
+    line-height: 1.5em;
+	margin: 0;
+ height: auto;
+}
+.bcd140526_post_feed.list a.thumbnail {
+    margin: 0 7px 7px 0;
+    float: left;
+    display: block;
+    line-height: 1; 
+height: auto;
+	/*
+    width: 48px;
+    height: 48px;
+	*/
+    overflow: hidden;
+    position: relative;
+}
+.bcd140526_post_feed.list a.thumbnail img {
+    width: auto;
+    height: auto;
+}
+.bcd140526_post_feed li.item a.cate {
+    display: block;
+    margin: 0 0 5px 0;
+ height: auto;
+}
+div.bcd140526_post_feed.column a.thumbnail {
+    display: block;
+    width: 100%;
+    line-height: 1;
+    margin: 0 0 5px 0; 
+height: auto;
+}
+div.bcd140526_post_feed.column a.thumbnail img {
+    width: 100%;
+    height: auto;
+}
+</style>
+	
+</head>
+
+{% if jekyll.environment == 'production' %}
+<!-- change your GA id in _config.yml -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', '{{site.google_analytics}}', 'auto');
+ga('send', 'pageview');
+</script>
+{% endif %}
+
+{% capture layout %}{% if page.layout %}layout-{{ page.layout }}{% endif %}{% endcapture %}
+<body class="{{layout}}" loading="lazy" >
+
+	    
+
+
+
+
+
+
+
+
+
+
+	    
+	
+
+	
+	
+	
+	
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="{{ site.baseurl }}/">
+    <img src="{{ site.baseurl }}/{{ site.logo }}" alt="{{ site.name }}">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                {% if page.url == "/" %}
+                <li class="nav-item active">
+                {% else %}
+                <li class="nav-item">
+                {% endif %}
+                <a class="nav-link" href="{{ site.baseurl }}/">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="{{ site.baseurl }}/terms-and-conditions">Terms and Conditions</a>
+                </li>
+		    
+		    <li class="nav-item">
+                <a class="nav-link" href="{{ site.baseurl }}/privacy-policy">Privacy Policy</a>
+                </li>
+
+		    <br />
+
+                {% include search-lunr.html %}
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    {{ content }}
+
+
+    
+    
+</div>    
+</div>
+
+
+	
+ <a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; document.getElementById('show_id').style.display='none';"></a><span id="spoiler_id" style="display: none;"><a class="link" onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';"></a>
+<div style="background-color: rgba(0, 0, 0, 0); margin: 1px;">
+<div class="smallfont"><i><span style="font-size: 16px; font-weight: bold; margin-right: 3px;"></span></i><input onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = 'Hide'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'new posts'; }" style="background-color: #00000000; font-size: 16px; width: auto;" type="button" value="new posts" />
+</div>
+<div class="alt2" style="background-color: rgba(255, 255, 255, 0); margin: 0px; padding: 0px;">
+<div style="display: none;" loading="lazy">
+
+
+	<!-- Categories Jumbotron
+================================================== -->
+<div class="jumbotron fortags" >
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            {% assign categories_list = site.categories %}
+            {% if categories_list.first[0] == null %}
+                {% for category in categories_list %}
+                    <a class="mt-1 mb-1" href="{{site.baseurl}}/categories#{{ category | url_escape | strip | replace: ' ', '-' }}">{{ category | camelcase }} ({{ site.tags[category].size }})</a>
+                {% endfor %}
+            {% else %}
+                {% for category in categories_list %}
+                    <a class="mt-1 mb-1" href="{{site.baseurl}}/categories#{{ category[0] | url_escape | strip | replace: ' ', '-' }}">{{ category[0] | camelcase }} ({{ category[1].size }})</a>
+                {% endfor %}
+            {% endif %}
+            {% assign categories_list = nil %}
+		</div>
+	</div>
+</div>
+
+	</div></div></div></span>
+	
+	
+	
+
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+    
+
+    
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+             Email: terlalumanis724@gmail.com <br />
+		    Copyright © {{ site.time | date: "%Y" }} {{ site.name }} 
+		    
+		    
+            </div>
+            
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="{{ site.baseurl }}/assets/js/mediumish.js"></script>
+
+{% if site.lazyimages == "enabled" %}
+<script src="{{ site.baseurl }}/assets/js/lazyload.js"></script>
+{% endif %}
+
+<script src="{{ site.baseurl }}/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+{% if page.layout == 'post' %}
+<script id="dsq-count-scr" src="//{{site.disqus}}.disqus.com/count.js"></script>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id='ds' style='width:100%;margin:auto; text-align:center;float:none;overflow:hidden; display:scroll;position:fixed; bottom:0%;z-index:9999'>
+         <div><a id='close-ds' onclick='document.getElementById(&apos;ds&apos;).style.display = &apos;none&apos;;' style='cursor:pointer;'><img alt='close' src='https://3.bp.blogspot.com/-ZZSacDHLWlM/VhvlKTMjbLI/AAAAAAAAF2M/UDzU4rrvcaI/s1600/btn_close.gif' title='close button'/></a></div>
+    <div style='background-color:#fff; text-align:center;display:block;max-width:100%;height:50px;overflow:auto;margin:auto'>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '7096299bdb00e89c211a1f5111792146',
+		'format' : 'iframe',
+		'height' : 50,
+		'width' : 320,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/7096299bdb00e89c211a1f5111792146/invoke.js"></script><br />
+<script type="text/javascript">
+	atOptions = {
+		'key' : '3fa6216209084767c5d794f398950b73',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/3fa6216209084767c5d794f398950b73/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'ab1e6cc3d33eeb62b1d9ed881061b8e1',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/ab1e6cc3d33eeb62b1d9ed881061b8e1/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'b25eebe92145be1325d0c81f69684092',
+		'format' : 'iframe',
+		'height' : 600,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/b25eebe92145be1325d0c81f69684092/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '8dc0fd4f8dc9c8b83ec1cee6be4b5baf',
+		'format' : 'iframe',
+		'height' : 300,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/8dc0fd4f8dc9c8b83ec1cee6be4b5baf/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '67a388fb39c72da0e9cff81385353348',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/67a388fb39c72da0e9cff81385353348/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'bd95f117f18e9b374b964b7e1eb59322',
+		'format' : 'iframe',
+		'height' : 50,
+		'width' : 320,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/bd95f117f18e9b374b964b7e1eb59322/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '312dcd8c983e4060a24e6d0d4a1b58e8',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/312dcd8c983e4060a24e6d0d4a1b58e8/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'f4319a55c4ac85ebac8a19619bc316c4',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/f4319a55c4ac85ebac8a19619bc316c4/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '04c92046d02db081b383b91a7056425f',
+		'format' : 'iframe',
+		'height' : 600,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/04c92046d02db081b383b91a7056425f/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'caa42a9cc3d6bb2d70cdd5e65ab9ce77',
+		'format' : 'iframe',
+		'height' : 300,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/caa42a9cc3d6bb2d70cdd5e65ab9ce77/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'bed6dc3f10b0c8755642b193c0b92f22',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/bed6dc3f10b0c8755642b193c0b92f22/invoke.js"></script>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id='ds' style='width:100%;margin:auto; text-align:center;float:none;overflow:hidden; display:scroll;position:fixed; bottom:0%;z-index:9999'>
+         <div><a id='close-ds' onclick='document.getElementById(&apos;ds&apos;).style.display = &apos;none&apos;;' style='cursor:pointer;'><img alt='close' src='https://3.bp.blogspot.com/-ZZSacDHLWlM/VhvlKTMjbLI/AAAAAAAAF2M/UDzU4rrvcaI/s1600/btn_close.gif' title='close button'/></a></div>
+    <div style='background-color:#fff; text-align:center;display:block;max-width:100%;height:50px;overflow:auto;margin:auto'>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'b3fe4a317e8a53be163a8dbb8a5c171d',
+		'format' : 'iframe',
+		'height' : 50,
+		'width' : 320,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/b3fe4a317e8a53be163a8dbb8a5c171d/invoke.js"></script><br />
+<script type="text/javascript">
+	atOptions = {
+		'key' : '3e60a0803f2756ce07a919df54403849',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/3e60a0803f2756ce07a919df54403849/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'e6c3cfc873f6e081e3cf7ebc01886d99',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/e6c3cfc873f6e081e3cf7ebc01886d99/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '26646d4167939b3be8c5260582446e06',
+		'format' : 'iframe',
+		'height' : 600,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/26646d4167939b3be8c5260582446e06/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '44cfa21a73680f71503f1a720c58aa06',
+		'format' : 'iframe',
+		'height' : 300,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/44cfa21a73680f71503f1a720c58aa06/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'c690a144e1ec53dc0f01dfb24326fd47',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/c690a144e1ec53dc0f01dfb24326fd47/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '3460a202f4aa22df07bc6234026effc3',
+		'format' : 'iframe',
+		'height' : 50,
+		'width' : 320,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//scheduleginnarcotic.com/3460a202f4aa22df07bc6234026effc3/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : '48761db0c749c8fd153cfa18a5f86793',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/48761db0c749c8fd153cfa18a5f86793/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'd32df3e3ca8d58d11a357c933fe5dbb5',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/d32df3e3ca8d58d11a357c933fe5dbb5/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'e2e6579704057dd52fec53047e60ccfc',
+		'format' : 'iframe',
+		'height' : 600,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/e2e6579704057dd52fec53047e60ccfc/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'bea3ddf51e6e2b03d8b900371e9802ce',
+		'format' : 'iframe',
+		'height' : 300,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/bea3ddf51e6e2b03d8b900371e9802ce/invoke.js"></script>
+<script type="text/javascript">
+	atOptions = {
+		'key' : 'de24a9067ecc1171d65a1fa4bdfbd15d',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//evendisciplineseedlings.com/de24a9067ecc1171d65a1fa4bdfbd15d/invoke.js"></script>
+<script type='text/javascript' src='//evendisciplineseedlings.com/4f/b8/e6/4fb8e6cbe5ebfedbd5136008b6ed4df5.js'></script>
+<script type='text/javascript' src='//evendisciplineseedlings.com/13/85/f1/1385f10ee1b1a3e303e9b9726cd05145.js'></script>
+</div></div>
+
+
+
+
+
+
+<script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css" />
+
+	
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=6f6732348ac4680e3e347f51038ca52e"
+                    },
+            ]
+        }
+}
+    );
+</script>
+
+
+
+
+	<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video2",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=b368f564e52479f103fe40464d1cc337"
+                    },
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video3",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=b320bff569bb5535540366abcef11a09"
+                    },
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video4",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=49c5be0bd21f497d041b5c9fbd45b6e5"
+                    },
+            ]
+        }
+}
+    );
+</script>
+
+
+
+	<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video5",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=76ac9939770f98c763743aef7fe03307"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+
+	<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video6",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=ab5387c0e59b6c477483c01d0bbba0d9"
+                    },
+                   
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video7",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=09f9349f4c93c94ce8ccdae0cfe7d1b3"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video8",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=a2b23e1e8c52efe115cb75e8acd88dd3"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video9",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=2dbc05f316031032d909ade9d6d811e8"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+
+	<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video10",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=d014353d9ac30e0996aeac720d295927"
+                    },
+                   
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video11",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=374fbbc1968b508dd3afe84a866c0eb8"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video12",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=b5456931fa7da0f4505cb43bd1974b16"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video13",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=29c77859845ddf4336d60079798dac5e"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+
+	<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video14",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=a2dfbe20ee755d8f5b94529596c12352"
+                    },
+                   
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video15",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=9e4b5d9f57cbf56bf06d0d4c7d9b1b58"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video16",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=1e5894e50a40b127c702459171e695ec"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video17",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=2856230d0b1dc0b212e67487b333b2b6"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+
+	<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video18",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=98448339698c6def54313284b0041e5e"
+                    },
+                   
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video19",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=e8eb8ffe61edb4cd01128da71b1ffecb"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+<script type="application/javascript">
+    var player = fluidPlayer(
+        "my-video20",
+{
+	"layoutControls": {
+		"controlBar": {
+			"autoHideTimeout": 1,
+			"animated": true,
+			"autoHide": true
+		},
+		"timelinePreview": {},
+		"htmlOnPauseBlock": {
+			"html": null,
+			"height": null,
+			"width": null
+		},
+		"autoplay": true,
+		"mute": true,
+		"allowTheatre": false,
+		"playPauseAnimation": true,
+		"playbackRateEnabled": true,
+		"allowDownload": false,
+		"playButtonShowing": true,
+		"fillToContainer": true,
+		"posterImage": ""
+	},
+	"vastOptions": {
+	"adList": [
+                    {
+                        "roll": "preRoll",
+                        "vastTag": "https://www.videosprofitnetwork.com/watch.xml?key=d6de727a4ca7d90ce831e058ec88310c"
+                    },
+                  
+            ]
+        }
+}
+    );
+</script>
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+	
+	
+</body>
+</html>
+

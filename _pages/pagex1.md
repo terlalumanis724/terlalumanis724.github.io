@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Download full Contents"
-permalink: /page1
+permalink: /pagex1
 comments: true
 ---
 

@@ -243,99 +243,47 @@ layout: null
 
 
 
-<style>
-/* Wrapper Recent Posts */
-.recent-posts {
-  margin: 3rem auto;
-  padding: 0 1rem;
-  max-width: 1200px;
-}
-
-.recent-posts h2 {
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
-  font-weight: 700;
-  color: #333;
-}
-
-/* Grid Layout */
-.recent-posts .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-/* Card */
-.post-card {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-/* Thumbnail */
-.post-card img {
-  display: block;
-  width: 100%;
-  height: auto; /* responsive, tidak distorsi */
-  border-bottom: 1px solid #eee;
-}
-
-/* Content */
-.post-card h3 {
-  font-size: 1.2rem;
-  margin: 1rem;
-}
-
-.post-card h3 a {
-  text-decoration: none;
-  color: #222;
-  transition: color 0.2s ease;
-}
-
-.post-card h3 a:hover {
-  color: #007acc;
-}
-
-.post-card p {
-  font-size: 0.95rem;
-  color: #555;
-  margin: 0 1rem 1rem;
-  line-height: 1.5;
-}
-</style>
-
 <section class="recent-posts">
   <h2>Recent Posts</h2>
-  <div class="grid">
-    {% for post in site.posts limit:6 %}
-      <div class="post-card">
-        {% if post.image %}
-          <a href="{{ post.url | relative_url }}">
-            <img 
-              src="{{ post.image | relative_url }}" 
-              srcset="{{ post.image | relative_url }} 600w, {{ post.image | relative_url }} 1200w"
-              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              alt="{{ post.title | escape }}" 
-              loading="lazy">
-          </a>
-        {% endif %}
-        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        
-        <!-- ambil <p> pertama utuh -->
-        {% assign first_paragraph = post.content | markdownify | split:"</p>" | first %}
-        <p>{{ first_paragraph | remove:"<p>" }}</p>
-      </div>
-    {% endfor %}
-  </div>
+  <div id="recent-posts-container" class="grid"></div>
 </section>
+
+<script>
+  const domain = window.location.hostname;
+  const mapCategory = {
+    "zestlinkrun.my.id": "zestlinkrun.my.id",
+    "boostloopcraft.my.id": "boostloopcraft.my.id",
+    "beatleakedflow.my.id": "beatleakedflow.my.id"
+  };
+
+  const category = mapCategory[domain] || null;
+
+  fetch("/posts.json")
+    .then(res => res.json())
+    .then(posts => {
+      const container = document.getElementById("recent-posts-container");
+      let filtered = posts;
+
+      if (category) {
+        filtered = posts.filter(p => p.categories.includes(category));
+      }
+
+      filtered.slice(0, 6).forEach(post => {
+        const card = document.createElement("div");
+        card.className = "post-card";
+        card.innerHTML = `
+          <a href="${post.url}">
+            <img src="${post.image}" alt="${post.title}" loading="lazy" style="width:100%;height:auto;">
+          </a>
+          <h3><a href="${post.url}">${post.title}</a></h3>
+          <p>${post.excerpt}</p>
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(err => console.error("Error loading posts:", err));
+</script>
+
 
 <!-- Pagination
 ================================================== -->

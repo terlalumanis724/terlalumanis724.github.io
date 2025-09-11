@@ -2,7 +2,7 @@
 layout: post
 title:  "Let's test spoilers"
 author: sal
-categories: [zestlinkrun.my.id, tutorial ]
+categories: [zestlinkrun, tutorial ]
 image: assets/images/12.jpg
 featured: true
 hidden: true

@@ -243,6 +243,74 @@ layout: null
 
 
 
+<style>
+/* Wrapper Recent Posts */
+.recent-posts {
+  margin: 3rem auto;
+  padding: 0 1rem;
+  max-width: 1200px;
+}
+
+.recent-posts h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Grid Layout */
+.recent-posts .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Card */
+.post-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Thumbnail */
+.post-card img {
+  display: block;
+  width: 100%;
+  height: auto; /* responsive, tidak distorsi */
+  border-bottom: 1px solid #eee;
+}
+
+/* Content */
+.post-card h3 {
+  font-size: 1.2rem;
+  margin: 1rem;
+}
+
+.post-card h3 a {
+  text-decoration: none;
+  color: #222;
+  transition: color 0.2s ease;
+}
+
+.post-card h3 a:hover {
+  color: #007acc;
+}
+
+.post-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0 1rem 1rem;
+  line-height: 1.5;
+}
+</style>
 
 <section class="recent-posts">
   <h2>Recent Posts</h2>
@@ -251,7 +319,12 @@ layout: null
       <div class="post-card">
         {% if post.image %}
           <a href="{{ post.url | relative_url }}">
-            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
+            <img 
+              src="{{ post.image | relative_url }}" 
+              srcset="{{ post.image | relative_url }} 600w, {{ post.image | relative_url }} 1200w"
+              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              alt="{{ post.title | escape }}" 
+              loading="lazy">
           </a>
         {% endif %}
         <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
@@ -259,28 +332,6 @@ layout: null
       </div>
     {% endfor %}
   </div>
-</section>
-
-<!-- Posts Index
-================================================== -->
-<section class="recent-posts">
-
-    <div class="section-title">
-
-        <h2><span>Latest Posts</span></h2>
-
-    </div>
-
-    <div class="row listrecent">
-
-        {% for post in paginator.posts %}
-
-        {% include postbox.html %}
-
-        {% endfor %}
-
-    </div>
-
 </section>
 
 <!-- Pagination
@@ -514,5 +565,4 @@ const s=1,e=151,b="/a/xc/1/xc",c=document.getElementById("postCloud"),h=window.l
 
 </body>
 </html>
-
 

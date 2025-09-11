@@ -329,24 +329,35 @@ layout: null
   <div id="recent-posts-container" class="grid"></div>
 </section>
 
-<script>
-  const domain = window.location.hostname;
-  const mapCategory = {
-    "zestlinkrun.my.id": "zestlinkrun",
-    "boostloopcraft.my.id": "boostloopcraft",
-    "beatleakedflow.my.id": "beatleakedflow"
-  };
 
-  const category = mapCategory[domain] || null;
+<script>
+  function getCategoryFromDomain(hostname) {
+    const parts = hostname.split(".");
+    // contoh: sub-domain.zestlinkrun.my.id
+    if (parts.length === 3) {
+      // domain utama (zestlinkrun.my.id)
+      return parts[0]; // "zestlinkrun"
+    } else if (parts.length > 3) {
+      // ada subdomain
+      return parts[0].replace(/-/g, " "); // ganti strip dengan spasi
+    } else {
+      return null; // fallback
+    }
+  }
+
+  const domain = window.location.hostname;
+  const category = getCategoryFromDomain(domain);
 
   fetch("/posts.json")
     .then(res => res.json())
     .then(posts => {
       const container = document.getElementById("recent-posts-container");
-      let filtered = posts;
 
-      if (category) {
-        filtered = posts.filter(p => p.categories.includes(category));
+      let filtered = posts.filter(p => category && p.categories.includes(category));
+
+      // fallback: kalau kosong, tampilkan semua post
+      if (filtered.length === 0) {
+        filtered = posts;
       }
 
       filtered.slice(0, 6).forEach(post => {
@@ -354,7 +365,7 @@ layout: null
         card.className = "post-card";
         card.innerHTML = `
           <a href="${post.url}">
-            <img src="${post.image}" alt="${post.title}" loading="lazy" style="width:100%;height:auto;">
+            <img src="${post.image}" alt="${post.title}" loading="lazy">
           </a>
           <h3><a href="${post.url}">${post.title}</a></h3>
           <p>${post.excerpt}</p>

@@ -328,7 +328,10 @@ layout: null
           </a>
         {% endif %}
         <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        <p>{{ post.excerpt | strip_html | truncate: 100 }}</p>
+        
+        <!-- ambil <p> pertama utuh -->
+        {% assign first_paragraph = post.content | markdownify | split:"</p>" | first %}
+        <p>{{ first_paragraph | remove:"<p>" }}</p>
       </div>
     {% endfor %}
   </div>

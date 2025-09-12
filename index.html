@@ -171,6 +171,36 @@ layout: null
   margin: 0 1rem 1rem;
   color: #555;
 }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+.pagination button {
+  background: #0073e6;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+.pagination button:hover:not(:disabled) {
+  background: #005bb5;
+}
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.pagination span {
+  font-size: 0.95rem;
+  color: #333;
+}
 </style>
   </head>
 <body>
@@ -279,10 +309,10 @@ layout: null
 
 
 
-
 <section class="recent-posts">
   <h2>Recent Posts</h2>
   <div id="recent-posts-container" class="grid"></div>
+  <div id="pagination" class="pagination"></div>
 </section>
 
 <script>
@@ -301,6 +331,9 @@ function getCategoryCandidates(hostname) {
 }
 
 const { sub: subCategory, domain: domainCategory } = getCategoryCandidates(window.location.hostname);
+const POSTS_PER_PAGE = 6;
+let currentPage = 1;
+let filteredPosts = [];
 
 fetch('/posts.json')
   .then(res => {
@@ -308,57 +341,101 @@ fetch('/posts.json')
     return res.json();
   })
   .then(posts => {
-    const container = document.getElementById('recent-posts-container');
     const normalize = s => String(s || '').replace(/[-.]+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
     if (!Array.isArray(posts) || posts.length === 0) {
-      return tryLoadFallback(container, posts);
+      return tryLoadFallback(document.getElementById('recent-posts-container'), posts);
     }
-    let filtered = [];
     if (subCategory) {
-      filtered = posts.filter(p =>
+      filteredPosts = posts.filter(p =>
         Array.isArray(p.categories) &&
         p.categories.some(c => normalize(c) === subCategory)
       );
     }
-    if (filtered.length === 0 && domainCategory) {
-      filtered = posts.filter(p =>
+    if (filteredPosts.length === 0 && domainCategory) {
+      filteredPosts = posts.filter(p =>
         Array.isArray(p.categories) &&
         p.categories.some(c => normalize(c) === domainCategory)
       );
     }
-    if (filtered.length === 0) {
-      return tryLoadFallback(container, posts);
+    if (filteredPosts.length === 0) {
+      return tryLoadFallback(document.getElementById('recent-posts-container'), posts);
     }
-    filtered.slice(0, 6).forEach(post => {
-      const card = document.createElement('article');
-      card.className = 'post-card';
-      const linkImg = document.createElement('a');
-      linkImg.href = post.url || '#';
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.alt = post.title || '';
-      img.style.width = '100%';
-      img.style.height = 'auto';
-      img.src = post.image || '/assets/default-thumb.jpg';
-      linkImg.appendChild(img);
-      card.appendChild(linkImg);
-      const h3 = document.createElement('h3');
-      const linkTitle = document.createElement('a');
-      linkTitle.href = post.url || '#';
-      linkTitle.textContent = post.title || '(no title)';
-      h3.appendChild(linkTitle);
-      card.appendChild(h3);
-      const p = document.createElement('p');
-      p.textContent = post.excerpt || '';
-      card.appendChild(p);
-      container.appendChild(card);
-    });
+    renderPosts();
   })
   .catch(err => {
     console.error('Error loading posts:', err);
-    const container = document.getElementById('recent-posts-container');
-    tryLoadFallback(container, []);
+    tryLoadFallback(document.getElementById('recent-posts-container'), []);
   });
+
+function renderPosts() {
+  const container = document.getElementById('recent-posts-container');
+  const pagination = document.getElementById('pagination');
+  container.innerHTML = '';
+  pagination.innerHTML = '';
+
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+  const pagePosts = filteredPosts.slice(start, end);
+
+  pagePosts.forEach(post => {
+    const card = document.createElement('article');
+    card.className = 'post-card';
+
+    const linkImg = document.createElement('a');
+    linkImg.href = post.url || '#';
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.alt = post.title || '';
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.src = post.image || '/assets/default-thumb.jpg';
+    linkImg.appendChild(img);
+    card.appendChild(linkImg);
+
+    const h3 = document.createElement('h3');
+    const linkTitle = document.createElement('a');
+    linkTitle.href = post.url || '#';
+    linkTitle.textContent = post.title || '(no title)';
+    h3.appendChild(linkTitle);
+    card.appendChild(h3);
+
+    const p = document.createElement('p');
+    p.textContent = post.excerpt || '';
+    card.appendChild(p);
+
+    container.appendChild(card);
+  });
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+
+  if (totalPages > 1) {
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = 'Prev';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPosts();
+      }
+    };
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Next';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPosts();
+      }
+    };
+
+    pagination.appendChild(prevBtn);
+    const info = document.createElement('span');
+    info.textContent = ` Page ${currentPage} of ${totalPages} `;
+    pagination.appendChild(info);
+    pagination.appendChild(nextBtn);
+  }
+}
 
 function tryLoadFallback(container, posts) {
   return fetch('/includes/fallback.html')
@@ -372,7 +449,7 @@ function tryLoadFallback(container, posts) {
     .catch(() => {
       container.innerHTML = '';
       if (Array.isArray(posts) && posts.length) {
-        posts.slice(0, 6).forEach(post => {
+        posts.slice(0, POSTS_PER_PAGE).forEach(post => {
           const card = document.createElement('article');
           card.className = 'post-card';
           const a = document.createElement('a');
@@ -389,16 +466,6 @@ function tryLoadFallback(container, posts) {
     });
 }
 </script>
-
-
-<!-- Pagination
-================================================== -->
-<div class="bottompagination">
-<div class="pointerup"><i class="fa fa-caret-up"></i></div>
-<span class="navigation" role="navigation">
-    {% include pagination.html %}
-</span>
-</div>
 
 </main>
 

@@ -122,109 +122,110 @@
 
 
 <!-- begin post -->
-<div class="fallback-posts">
-  <h2>Latest Posts</h2>
 
-  <div class="posts-grid">
-    {% for post in site.posts limit:6 offset:0 %}
-      <div class="post-card">
-        <img src="{% if post.image %}{{ post.image }}{% else %}/assets/img/default.jpg{% endif %}" alt="{{ post.title }}">
-        <h3>{{ post.title }}</h3>
-        <a href="{{ post.url }}" class="read-more">Read More</a>
-      </div>
-    {% endfor %}
-  </div>
+<section class="recent-posts">
+  <h2>All Posts</h2>
+  <div id="fallback-posts-container" class="grid"></div>
+  <div id="fallback-pagination" class="pagination"></div>
+</section>
 
-  <div class="pagination">
-    {% if paginator.previous_page %}
-      <a href="{{ paginator.previous_page_path }}" class="prev">← Previous</a>
-    {% endif %}
-    {% if paginator.next_page %}
-      <a href="{{ paginator.next_page_path }}" class="next">Next →</a>
-    {% endif %}
-  </div>
-</div>
+<script>
+const POSTS_PER_PAGE = 6;
+let currentPage = 1;
+let allPosts = [];
 
-<style>
-.fallback-posts {
-  max-width: 1000px;
-  margin: 3rem auto;
-  padding: 0 1rem;
+fetch('/posts.json')
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to load posts.json');
+    return res.json();
+  })
+  .then(posts => {
+    if (!Array.isArray(posts) || posts.length === 0) {
+      showMessage('No posts available.');
+      return;
+    }
+    allPosts = posts;
+    renderFallbackPosts();
+  })
+  .catch(err => {
+    console.error('Error loading posts:', err);
+    showMessage('Unable to load posts.');
+  });
+
+function renderFallbackPosts() {
+  const container = document.getElementById('fallback-posts-container');
+  const pagination = document.getElementById('fallback-pagination');
+  container.innerHTML = '';
+  pagination.innerHTML = '';
+
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+  const pagePosts = allPosts.slice(start, end);
+
+  pagePosts.forEach(post => {
+    const card = document.createElement('article');
+    card.className = 'post-card';
+
+    const linkImg = document.createElement('a');
+    linkImg.href = post.url || '#';
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.alt = post.title || '';
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.src = post.image || '/assets/default-thumb.jpg';
+    linkImg.appendChild(img);
+    card.appendChild(linkImg);
+
+    const h3 = document.createElement('h3');
+    const linkTitle = document.createElement('a');
+    linkTitle.href = post.url || '#';
+    linkTitle.textContent = post.title || '(no title)';
+    h3.appendChild(linkTitle);
+    card.appendChild(h3);
+
+    const p = document.createElement('p');
+    p.textContent = post.excerpt || '';
+    card.appendChild(p);
+
+    container.appendChild(card);
+  });
+
+  const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+  if (totalPages > 1) {
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = 'Prev';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderFallbackPosts();
+      }
+    };
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Next';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderFallbackPosts();
+      }
+    };
+
+    pagination.appendChild(prevBtn);
+    const info = document.createElement('span');
+    info.textContent = ` Page ${currentPage} of ${totalPages} `;
+    pagination.appendChild(info);
+    pagination.appendChild(nextBtn);
+  }
 }
 
-.fallback-posts h2 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
+function showMessage(msg) {
+  const container = document.getElementById('fallback-posts-container');
+  container.innerHTML = `<p>${msg}</p>`;
 }
-
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.post-card {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  text-align: center;
-  padding-bottom: 1rem;
-  transition: transform 0.2s ease;
-}
-
-.post-card:hover {
-  transform: translateY(-5px);
-}
-
-.post-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-}
-
-.post-card h3 {
-  font-size: 1.2rem;
-  margin: 1rem;
-}
-
-.read-more {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #007acc;
-  color: #fff;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.read-more:hover {
-  background: #005fa3;
-}
-
-.pagination {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.pagination a {
-  display: inline-block;
-  margin: 0 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #eee;
-  color: #333;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.pagination a:hover {
-  background: #ddd;
-}
-</style>
+</script>
 <!-- end post -->
 
 

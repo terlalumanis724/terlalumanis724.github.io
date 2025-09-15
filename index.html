@@ -1,3 +1,4 @@
+
 ---
 layout: null
 ---
@@ -266,7 +267,7 @@ layout: null
 <main>
 	
 <!-- awal include mengambil dari folder /includes/ berdasarkan nama subdomain/domain -->
-  <div class="spo" id="dynamic-include"></div>
+  <div class="spoo" id="dynamic-include"></div>
   <script>
     const host = window.location.hostname.toLowerCase();
     const parts = host.split(".");
@@ -279,7 +280,7 @@ layout: null
     // Kandidat file sesuai aturan
     let subFile = subdomain ? subdomain + ".html" : null;
     let domainFile = domain + ".html";
-    let fallbackFile = "fallback.html";
+    let fallbackFile = "/includes/fallback.html";
 
     // Fungsi untuk mencoba load file berurutan
     function loadFile(fileList) {

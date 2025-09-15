@@ -337,7 +337,7 @@ function renderPosts() {
   const pagePosts = filteredPosts.slice(start, end);      
 
   pagePosts.forEach(post => {      
-    const card = document.createElement('article');      
+    const card = document.createElement('div');      
     card.className = 'post-card';      
 
     const linkImg = document.createElement('a');      
@@ -357,10 +357,6 @@ function renderPosts() {
     linkTitle.textContent = post.title || '(no title)';      
     h3.appendChild(linkTitle);      
     card.appendChild(h3);      
-
-    const p = document.createElement('p');      
-    p.textContent = post.description || '';      
-    card.appendChild(p);      
 
     container.appendChild(card);      
   });      
@@ -412,7 +408,7 @@ function renderFallback(posts) {
   if (Array.isArray(posts) && posts.length) {      
     const randomPosts = shuffleArray(posts).slice(0, POSTS_PER_PAGE);      
     randomPosts.forEach(post => {      
-      const card = document.createElement('article');      
+      const card = document.createElement('div');      
       card.className = 'post-card';      
 
       const linkImg = document.createElement('a');      
@@ -432,10 +428,6 @@ function renderFallback(posts) {
       a.textContent = post.title || '(no title)';      
       h3.appendChild(a);      
       card.appendChild(h3);      
-
-      const p = document.createElement('p');      
-      p.textContent = post.description || '';      
-      card.appendChild(p);      
 
       container.appendChild(card);      
     });      
@@ -834,7 +826,6 @@ function renderFallback(posts) {
 
 </body>
 </html>
-
 
 
 

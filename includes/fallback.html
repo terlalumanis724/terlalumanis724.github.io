@@ -110,13 +110,184 @@
   ]
 }
 </script>
-
+<div class="spo">
 <iframe width="100%" height="auto" src="https://www.youtube.com/embed/smT-__75lsI" title="Slow Motion]  Relleciga Swimwear Part-1｜Miami swim week | Miami Swim Week® -The Shows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <iframe width="100%" height="auto" src="https://www.youtube.com/embed/Jk7Y5QLOD0Q" title="Slow Motion ] Bikinis by Bridget | Miami swim week 24-25 | Miami Swim Week® -The Shows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <iframe width="100%" height="auto" src="https://www.youtube.com/embed/MFETM8v6sMA" title="Slow Motion] Lascana Swimwear Part-2 | Miami Swim Week® -The Shows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <iframe width="100%" height="auto" src="https://www.youtube.com/embed/rKVAulIhHuc" title="4K Vertical ] Dragana Swim  Full Show | 2024 Miami swim week | Miami Swim Week® -The Shows" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <iframe width="100%" height="auto" src="https://www.youtube.com/embed/uARTIrmM8Hw" title="[4k60] 2024Draganar | Vertical SlowMotion | MIAMI SWIM WEEK" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
+
+
+
+
+---
+layout: default
+---
+
+<h2>All Posts</h2>
+
+<div class="posts-grid">
+  {% for post in paginator.posts %}
+    <article class="post-card">
+      <div class="post-thumb">
+        {% if post.image %}
+          <a href="{{ post.url | relative_url }}">
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
+          </a>
+        {% else %}
+          <div class="no-thumb">
+            <a href="{{ post.url | relative_url }}" aria-label="{{ post.title }}">
+              <!-- SVG Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14c0 
+                1.1.9 2 2 2h14a2 2 0 0 0 2-2zM5 5h14v8l-3.5-3.5-4.5 
+                6-3.5-4.5L5 17V5z"/>
+              </svg>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      <h3 class="post-title">
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </h3>
+      <div class="post-excerpt">
+        {{ post.excerpt }}
+      </div>
+      <a href="{{ post.url | relative_url }}" class="read-more">Read more →</a>
+    </article>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a class="prev" href="{{ paginator.previous_page_path | relative_url }}">&laquo; Newer Posts</a>
+  {% endif %}
+
+  <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+
+  {% if paginator.next_page %}
+    <a class="next" href="{{ paginator.next_page_path | relative_url }}">Older Posts &raquo;</a>
+  {% endif %}
+</div>
+
+<style>
+/* Grid Layout */
+.posts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .posts-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1200px) {
+  .posts-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Card Style */
+.post-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.post-thumb {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.no-thumb {
+  width: 100%;
+  height: 100%;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-thumb svg {
+  width: 48px;
+  height: 48px;
+}
+
+.post-title {
+  margin: 1rem;
+  font-size: 1.2rem;
+}
+
+.post-title a {
+  text-decoration: none;
+  color: #333;
+}
+
+.post-title a:hover {
+  color: #007acc;
+}
+
+.post-excerpt {
+  margin: 0 1rem 1rem;
+  color: #444;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.read-more {
+  margin: 0 1rem 1rem;
+  display: inline-block;
+  color: #007acc;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination a:hover {
+  background: #007acc;
+  color: #fff;
+}
+</style>
 <!-- ads by infotainmentsementara.blogspot.com -->
 <br /><script type='text/javascript' src='//pl16770411.revenuecpmgate.com/ba/2b/54/ba2b546b363dc2c15e5a6579135270ad.js'></script><script type='text/javascript' src='//pl26322456.revenuecpmgate.com/2c/14/eb/2c14eb4077aa50d9f7517a0e55b5bb4c.js'></script><script type="text/javascript">
 	atOptions = {
@@ -182,7 +353,7 @@
 </script>
 <script type="text/javascript" src="//www.highperformanceformat.com/cf38f5abe9d6282e2216fd9942960fd1/invoke.js"></script>
 	<br />
-	
+</div class="spo">
 	drgsnddrnk слив
 milanka kudel forum
 adeline lascano fapello
@@ -2069,5 +2240,5 @@ caroline zalog naked
 jordana vucetic fapello
 aliciaravy erome
 
-
+</div>
 	

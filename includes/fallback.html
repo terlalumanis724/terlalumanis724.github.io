@@ -125,72 +125,25 @@
 <div class="fallback-posts">
   <h2>Latest Posts</h2>
 
-  <div id="posts-container" class="posts-grid"></div>
+  <div class="posts-grid">
+    {% for post in site.posts limit:6 offset:0 %}
+      <div class="post-card">
+        <img src="{% if post.image %}{{ post.image }}{% else %}/assets/img/default.jpg{% endif %}" alt="{{ post.title }}">
+        <h3>{{ post.title }}</h3>
+        <a href="{{ post.url }}" class="read-more">Read More</a>
+      </div>
+    {% endfor %}
+  </div>
 
-  <div id="pagination" class="pagination"></div>
+  <div class="pagination">
+    {% if paginator.previous_page %}
+      <a href="{{ paginator.previous_page_path }}" class="prev">← Previous</a>
+    {% endif %}
+    {% if paginator.next_page %}
+      <a href="{{ paginator.next_page_path }}" class="next">Next →</a>
+    {% endif %}
+  </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const postsData = [
-      {% for post in site.posts %}
-        {
-          "title": {{ post.title | jsonify }},
-          "url": "{{ post.url | relative_url }}",
-          "image": {% if post.image %}{{ post.image | jsonify }}{% else %}"/assets/img/default.jpg"{% endif %}
-        }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ];
-
-    const postsPerPage = 6;
-    let currentPage = 1;
-
-    function renderPosts(page) {
-      const start = (page - 1) * postsPerPage;
-      const end = start + postsPerPage;
-      const sliced = postsData.slice(start, end);
-
-      const container = document.getElementById("posts-container");
-      container.innerHTML = "";
-
-      sliced.forEach(post => {
-        const card = `
-          <div class="post-card">
-            <img src="${post.image}" alt="${post.title}">
-            <h3>${post.title}</h3>
-            <a href="${post.url}" class="read-more">Read More</a>
-          </div>
-        `;
-        container.innerHTML += card;
-      });
-
-      renderPagination(page);
-    }
-
-    function renderPagination(page) {
-      const totalPages = Math.ceil(postsData.length / postsPerPage);
-      const pagination = document.getElementById("pagination");
-      pagination.innerHTML = "";
-
-      if (page > 1) {
-        pagination.innerHTML += `<a href="#" class="prev" data-page="${page - 1}">← Previous</a>`;
-      }
-      if (page < totalPages) {
-        pagination.innerHTML += `<a href="#" class="next" data-page="${page + 1}">Next →</a>`;
-      }
-
-      document.querySelectorAll("#pagination a").forEach(link => {
-        link.addEventListener("click", function(e) {
-          e.preventDefault();
-          currentPage = parseInt(this.dataset.page);
-          renderPosts(currentPage);
-        });
-      });
-    }
-
-    renderPosts(currentPage);
-  });
-</script>
 
 <style>
 .fallback-posts {

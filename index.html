@@ -306,7 +306,6 @@ layout: null
   </script>
 <!-- akhir include -->
 
-
 <section class="recent-posts">      
   <div id="recent-posts-container" class="grid"></div>      
   <div id="pagination" class="pagination"></div>      
@@ -340,8 +339,9 @@ fetch('/posts.json')
   .then(posts => {      
     const normalize = s => String(s || '').replace(/[-.]+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();      
     if (!Array.isArray(posts) || posts.length === 0) {      
-      return tryLoadFallback(document.getElementById('recent-posts-container'), posts);      
+      return renderFallback(posts);      
     }      
+
     if (subCategory) {      
       filteredPosts = posts.filter(p =>      
         Array.isArray(p.categories) &&      
@@ -355,13 +355,14 @@ fetch('/posts.json')
       );      
     }      
     if (filteredPosts.length === 0) {      
-      return tryLoadFallback(document.getElementById('recent-posts-container'), posts);      
+      return renderFallback(posts);      
     }      
+
     renderPosts();      
   })      
   .catch(err => {      
     console.error('Error loading posts:', err);      
-    tryLoadFallback(document.getElementById('recent-posts-container'), []);      
+    renderFallback([]);      
   });      
 
 function renderPosts() {      
@@ -397,7 +398,7 @@ function renderPosts() {
     card.appendChild(h3);      
 
     const p = document.createElement('p');      
-    p.textContent = post.description || '';   // ambil dari description
+    p.textContent = post.description || '';      
     card.appendChild(p);      
 
     container.appendChild(card);      
@@ -434,33 +435,54 @@ function renderPosts() {
   }      
 }      
 
-function tryLoadFallback(container, posts) {      
-  return fetch('/includes/fallback.html')      
-    .then(r => {      
-      if (!r.ok) throw new Error('fallback not found');      
-      return r.text();      
-    })      
-    .then(html => {      
-      container.innerHTML = html;      
-    })      
-    .catch(() => {      
-      container.innerHTML = '';      
-      if (Array.isArray(posts) && posts.length) {      
-        posts.slice(0, POSTS_PER_PAGE).forEach(post => {      
-          const card = document.createElement('article');      
-          card.className = 'post-card';      
-          const a = document.createElement('a');      
-          a.href = post.url || '#';      
-          a.textContent = post.title || '(no title)';      
-          card.appendChild(a);      
-          container.appendChild(card);      
-        });      
-      } else {      
-        const msg = document.createElement('p');      
-        msg.textContent = 'No posts found.';      
-        container.appendChild(msg);      
-      }      
+function shuffleArray(arr) {      
+  return arr      
+    .map(v => ({ v, sort: Math.random() }))      
+    .sort((a, b) => a.sort - b.sort)      
+    .map(({ v }) => v);      
+}      
+
+function renderFallback(posts) {      
+  const container = document.getElementById('recent-posts-container');      
+  const pagination = document.getElementById('pagination');      
+  container.innerHTML = '';      
+  pagination.innerHTML = '';      
+
+  if (Array.isArray(posts) && posts.length) {      
+    const randomPosts = shuffleArray(posts).slice(0, POSTS_PER_PAGE);      
+    randomPosts.forEach(post => {      
+      const card = document.createElement('article');      
+      card.className = 'post-card';      
+
+      const linkImg = document.createElement('a');      
+      linkImg.href = post.url || '#';      
+      const img = document.createElement('img');      
+      img.loading = 'lazy';      
+      img.alt = post.title || '';      
+      img.style.width = '100%';      
+      img.style.height = 'auto';      
+      img.src = post.image || '/assets/default-thumb.jpg';      
+      linkImg.appendChild(img);      
+      card.appendChild(linkImg);      
+
+      const h3 = document.createElement('h3');      
+      const a = document.createElement('a');      
+      a.href = post.url || '#';      
+      a.textContent = post.title || '(no title)';      
+      h3.appendChild(a);      
+      card.appendChild(h3);      
+
+      const p = document.createElement('p');      
+      p.textContent = post.description || '';      
+      card.appendChild(p);      
+
+      container.appendChild(card);      
     });      
+  } else {      
+    const msg = document.createElement('p');      
+    msg.textContent = 'No posts found.';      
+    container.appendChild(msg);      
+  }      
 }      
 </script>
 

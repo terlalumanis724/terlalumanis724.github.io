@@ -1,3 +1,115 @@
+
+
+<section id="fallback-posts">
+  <h2>All Posts</h2>
+  <div id="fallback-posts-container" class="fallback-grid"></div>
+  <div id="fallback-pagination" class="fallback-pagination"></div>
+</section>
+
+<script>
+const FALLBACK_POSTS_PER_PAGE = 6;
+let fallbackPage = 1;
+let fallbackPosts = [];
+
+fetch('/posts.json')
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to load posts.json');
+    return res.json();
+  })
+  .then(posts => {
+    if (!Array.isArray(posts) || posts.length === 0) {
+      showFallbackMessage('No posts available.');
+      return;
+    }
+    fallbackPosts = posts;
+    renderFallbackPosts();
+  })
+  .catch(err => {
+    console.error('Error loading posts:', err);
+    showFallbackMessage('Unable to load posts.');
+  });
+
+function renderFallbackPosts() {
+  const container = document.getElementById('fallback-posts-container');
+  const pagination = document.getElementById('fallback-pagination');
+  container.innerHTML = '';
+  pagination.innerHTML = '';
+
+  const start = (fallbackPage - 1) * FALLBACK_POSTS_PER_PAGE;
+  const end = start + FALLBACK_POSTS_PER_PAGE;
+  const pagePosts = fallbackPosts.slice(start, end);
+
+  pagePosts.forEach(post => {
+    const card = document.createElement('article');
+    card.className = 'fallback-card';
+
+    const linkImg = document.createElement('a');
+    linkImg.href = post.url || '#';
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.alt = post.title || '';
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.src = post.image || '/assets/default-thumb.jpg';
+    linkImg.appendChild(img);
+    card.appendChild(linkImg);
+
+    const h3 = document.createElement('h3');
+    const linkTitle = document.createElement('a');
+    linkTitle.href = post.url || '#';
+    linkTitle.textContent = post.title || '(no title)';
+    h3.appendChild(linkTitle);
+    card.appendChild(h3);
+
+    const readMore = document.createElement('a');
+    readMore.href = post.url || '#';
+    readMore.textContent = 'Read More';
+    readMore.className = 'fallback-readmore';
+    card.appendChild(readMore);
+
+    container.appendChild(card);
+  });
+
+  const totalPages = Math.ceil(fallbackPosts.length / FALLBACK_POSTS_PER_PAGE);
+  if (totalPages > 1) {
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = 'Prev';
+    prevBtn.disabled = fallbackPage === 1;
+    prevBtn.onclick = () => {
+      if (fallbackPage > 1) {
+        fallbackPage--;
+        renderFallbackPosts();
+      }
+    };
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Next';
+    nextBtn.disabled = fallbackPage === totalPages;
+    nextBtn.onclick = () => {
+      if (fallbackPage < totalPages) {
+        fallbackPage++;
+        renderFallbackPosts();
+      }
+    };
+
+    pagination.appendChild(prevBtn);
+    const info = document.createElement('span');
+    info.textContent = ` Page ${fallbackPage} of ${totalPages} `;
+    pagination.appendChild(info);
+    pagination.appendChild(nextBtn);
+  }
+}
+
+function showFallbackMessage(msg) {
+  const container = document.getElementById('fallback-posts-container');
+  container.innerHTML = `<p>${msg}</p>`;
+}
+</script>
+
+
+
+
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -120,113 +232,6 @@
 
 
 
-
-<!-- begin post -->
-
-<section class="recent-posts">
-  <h2>All Posts</h2>
-  <div id="fallback-posts-container" class="grid"></div>
-  <div id="fallback-pagination" class="pagination"></div>
-</section>
-
-<script>
-const POSTS_PER_PAGE = 6;
-let currentPage = 1;
-let allPosts = [];
-
-fetch('/posts.json')
-  .then(res => {
-    if (!res.ok) throw new Error('Failed to load posts.json');
-    return res.json();
-  })
-  .then(posts => {
-    if (!Array.isArray(posts) || posts.length === 0) {
-      showMessage('No posts available.');
-      return;
-    }
-    allPosts = posts;
-    renderFallbackPosts();
-  })
-  .catch(err => {
-    console.error('Error loading posts:', err);
-    showMessage('Unable to load posts.');
-  });
-
-function renderFallbackPosts() {
-  const container = document.getElementById('fallback-posts-container');
-  const pagination = document.getElementById('fallback-pagination');
-  container.innerHTML = '';
-  pagination.innerHTML = '';
-
-  const start = (currentPage - 1) * POSTS_PER_PAGE;
-  const end = start + POSTS_PER_PAGE;
-  const pagePosts = allPosts.slice(start, end);
-
-  pagePosts.forEach(post => {
-    const card = document.createElement('article');
-    card.className = 'post-card';
-
-    const linkImg = document.createElement('a');
-    linkImg.href = post.url || '#';
-    const img = document.createElement('img');
-    img.loading = 'lazy';
-    img.alt = post.title || '';
-    img.style.width = '100%';
-    img.style.height = 'auto';
-    img.src = post.image || '/assets/default-thumb.jpg';
-    linkImg.appendChild(img);
-    card.appendChild(linkImg);
-
-    const h3 = document.createElement('h3');
-    const linkTitle = document.createElement('a');
-    linkTitle.href = post.url || '#';
-    linkTitle.textContent = post.title || '(no title)';
-    h3.appendChild(linkTitle);
-    card.appendChild(h3);
-
-    const p = document.createElement('p');
-    p.textContent = post.excerpt || '';
-    card.appendChild(p);
-
-    container.appendChild(card);
-  });
-
-  const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
-  if (totalPages > 1) {
-    const prevBtn = document.createElement('button');
-    prevBtn.textContent = 'Prev';
-    prevBtn.disabled = currentPage === 1;
-    prevBtn.onclick = () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderFallbackPosts();
-      }
-    };
-
-    const nextBtn = document.createElement('button');
-    nextBtn.textContent = 'Next';
-    nextBtn.disabled = currentPage === totalPages;
-    nextBtn.onclick = () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderFallbackPosts();
-      }
-    };
-
-    pagination.appendChild(prevBtn);
-    const info = document.createElement('span');
-    info.textContent = ` Page ${currentPage} of ${totalPages} `;
-    pagination.appendChild(info);
-    pagination.appendChild(nextBtn);
-  }
-}
-
-function showMessage(msg) {
-  const container = document.getElementById('fallback-posts-container');
-  container.innerHTML = `<p>${msg}</p>`;
-}
-</script>
-<!-- end post -->
 
 
 <!-- ads by infotainmentsementara.blogspot.com -->

@@ -1,12 +1,19 @@
 export async function onRequestGet(context) {
   const host = context.request.headers.get("host");
-  return new Response(
-`User-agent: *
+  
+  const body = `User-agent: *
 Allow: /
 
 Sitemap: https://${host}/sitemap.xml
 Sitemap: https://${host}/feed.xml
-`,
-    { headers: { "Content-Type": "text/plain" } }
-  );
+`;
+
+  return new Response(body, {
+    headers: {
+      "Content-Type": "text/plain; charset=UTF-8",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
+    }
+  });
 }

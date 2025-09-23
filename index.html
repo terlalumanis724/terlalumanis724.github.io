@@ -202,6 +202,24 @@ layout: null
   color: #333;
 }
 </style>
+
+
+
+
+
+<link rel="sitemap" type="application/xml" href="" id="sitemap-main">
+<link rel="alternate" type="application/rss+xml" href="" id="sitemap-feed">
+
+<script>
+(function() {
+  var origin = window.location.origin;
+  document.getElementById("sitemap-main").href = origin + "/sitemap.xml";
+  document.getElementById("sitemap-feed").href = origin + "/feed.xml";
+})();
+</script>	
+
+
+	
   </head>
 <body>
 	
@@ -826,6 +844,7 @@ function renderFallback(posts) {
 
 </body>
 </html>
+
 
 
 

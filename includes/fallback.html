@@ -1851,18 +1851,20 @@
 
 
 
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  var schema = document.getElementById("video-schemaxxxuxo");
-  if (schema) {
-    var data = JSON.parse(schema.textContent);
-    data.mainEntityOfPage["@id"] = window.location.href; // otomatis ambil URL halaman
-    schema.textContent = JSON.stringify(data, null, 2);
+  let schema = document.querySelector('#video-schemaxxxxo'); // id script json-ld Anda
+  if(schema){
+    let data = JSON.parse(schema.textContent);
+    if(data.mainEntityOfPage && data.mainEntityOfPage['@id'] === ""){
+      data.mainEntityOfPage['@id'] = window.location.href;
+      schema.textContent = JSON.stringify(data);
+    }
   }
 });
 </script>
 
+    
 <ul id="video-schemaxxxuxo" class="video-gallery">
     <li>
         <iframe width="100%" height="480" src="https://www.youtube.com/embed/95iS81WiMn8" title="zeeba kalan onlyfans porn tirani danthanarayana porn christina khalil xxbrits alisa goldfinch fapello" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>

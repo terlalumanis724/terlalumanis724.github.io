@@ -1,35 +1,25 @@
 export async function onRequestGet(context) {
   const host = context.request.headers.get("host");
+  const sitemapUrl = `https://${host}/sitemap.xml`;
 
-  // Daftar sitemap yang mau diping
-  const sitemaps = [
-    `https://${host}/sitemap.xml`,
-    `https://${host}/feed.xml`
-  ];
-
-  // Daftar mesin pencari
-  const searchEngines = [
-    "https://www.google.com/ping?sitemap=",
-    "https://www.bing.com/ping?sitemap="
+  const engines = [
+    `https://www.google.com/ping?sitemap=${sitemapUrl}`,
+    `https://www.bing.com/ping?sitemap=${sitemapUrl}`,
+    // Yandex ping (lebih baik juga submit via Yandex Webmaster Tools)
+    `https://webmaster.yandex.com/site/map.xml?host=${sitemapUrl}`
   ];
 
   let results = [];
-
-  for (let sitemap of sitemaps) {
-    for (let engine of searchEngines) {
-      try {
-        const url = engine + encodeURIComponent(sitemap);
-        const res = await fetch(url);
-        results.push(`${url} → ${res.status}`);
-      } catch (err) {
-        results.push(`${engine}${sitemap} → ERROR`);
-      }
+  for (const url of engines) {
+    try {
+      const res = await fetch(url);
+      results.push({ url, status: res.status });
+    } catch (err) {
+      results.push({ url, error: err.toString() });
     }
   }
 
-  return new Response(
-    "Ping Results:\n" + results.join("\n"),
-    { headers: { "Content-Type": "text/plain; charset=UTF-8" } }
-  );
+  return new Response(JSON.stringify({ pinged: results }, null, 2), {
+    headers: { "Content-Type": "application/json; charset=UTF-8" }
+  });
 }
-

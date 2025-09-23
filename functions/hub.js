@@ -1,5 +1,5 @@
 export async function onRequest(context) {
-  const zoneId = "3b33f4c897d3409d3d0cd2eedd312e9f"; // Ganti dengan Zone ID domain kamu
+  const zoneId = "b2b86e300420b7fd58f9e85a82adc7a9"; // Ganti dengan Zone ID domain kamu
   const apiToken = context.env.CF_API_TOKEN; // Tambahkan secret di Pages
 
   const url = `https://api.cloudflare.com/client/v4/zones/${zoneId}/dns_records?per_page=100`;

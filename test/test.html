@@ -35,7 +35,7 @@ layout: page
 
     {% for tag in site.tags %}
       var tagName = "{{ tag[0] | slugify }}"; 
-      var tagText = "{{ tag[0] }} ({{ tag[1].size }})";
+      var tagText = "{{ tag[0] }}"; // hanya nama tag, tanpa jumlah
 
       var a = document.createElement("a");
       a.href = "https://" + tagName + "." + hostname;

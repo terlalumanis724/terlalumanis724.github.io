@@ -5,7 +5,7 @@ source "https://rubygems.org"
 # file and run `bundle install`. Run Jekyll with `bundle exec`, like so:
 #
 #     bundle exec jekyll serve
-#
+# 
 
 # If you have any plugins, put them here!
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?

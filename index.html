@@ -597,62 +597,11 @@ function renderFallback(posts) {
 
 
 
-<!--tags -->
-<style>
-	.section-title {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  font-weight: bold;
-}
 
-.tag-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 1rem;
-}
 
-.tag-item {
-  background: #f5f7fa;
-  border-radius: 999px;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.95rem;
-  color: #3366cc;
-  text-decoration: none;
-  border: 1px solid #e0e6ed;
-  transition: all 0.2s ease-in-out;
-}
 
-.tag-item:hover {
-  background: #3366cc;
-  color: #fff;
-  border-color: #3366cc;
-}
 
-.tag-count {
-  background: #ff4757;
-  color: #fff;
-  border-radius: 999px;
-  padding: 0.1rem 0.4rem;
-  font-size: 0.75rem;
-  margin-left: 0.3rem;
-}
-</style>
-<h2 class="section-title">Tags</h2>
-<div class="tag-cloud">
-  {% assign sorted_tags = site.tags | sort: "last" | reverse %}
-  {% for tag in sorted_tags %}
-    {% assign tag_name = tag[0] %}
-    {% assign posts = tag[1] %}
-    <a href="/tag/{{ tag_name | slugify }}/" class="tag-item">
-      {{ tag_name }} <span class="tag-count">{{ posts.size }}</span>
-    </a>
-  {% endfor %}
-</div>
-
-	<!--tags-->
+	
 
 
 

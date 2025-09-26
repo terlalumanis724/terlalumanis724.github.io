@@ -1,0 +1,19 @@
+<div id="tag-list"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var hostname = window.location.hostname; // contoh: domainku.my.id
+    var container = document.getElementById("tag-list");
+
+    {% for tag in site.tags %}
+      var tagName = "{{ tag[0] | slugify }}"; 
+      var tagText = "{{ tag[0] }} ({{ tag[1].size }})";
+
+      var a = document.createElement("a");
+      a.href = "https://" + tagName + "." + hostname; 
+      a.textContent = tagText;
+      a.style.display = "block"; // biar rapi, per baris
+      container.appendChild(a);
+    {% endfor %}
+  });
+</script>

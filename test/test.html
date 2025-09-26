@@ -1,29 +1,31 @@
 ---
-layout: page
+layout: null
 ---
 
 <style>
   #tag-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
-  margin: 20px 0;
-}
-#tag-list a {
-  display: block;
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #444;
-  transition: all 0.2s ease;
-}
-#tag-list a:hover {
-  background: #2563eb;
-  color: white;
-}
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  #tag-list a {
+    display: inline-block;
+    background: #f3f4f6;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  #tag-list a:hover {
+    background: #2563eb;
+    color: #fff;
+  }
 </style>
+
 <div id="tag-list"></div>
 
 <script>
@@ -38,7 +40,6 @@ layout: page
       var a = document.createElement("a");
       a.href = "https://" + tagName + "." + hostname;
       a.textContent = tagText;
-      a.style.display = "block";
       container.appendChild(a);
     {% endfor %}
   });

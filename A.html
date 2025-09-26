@@ -70,22 +70,45 @@ layout: null
   <h1>Browse Tags</h1>
   <div id="tag-list"></div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var hostname = window.location.hostname;
-      var container = document.getElementById("tag-list");
+  
+      <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var hostname = window.location.hostname;
+    var parts = hostname.split("."); 
 
-      {% for tag in site.tags %}
-        var tagName = "{{ tag[0] | slugify }}"; 
-        var tagText = "{{ tag[0] }}"; // only tag name
+    // ambil 2 bagian terakhir → domain + TLD (misal: domainku.my.id)
+    var baseDomain = parts.slice(-2).join(".");
 
-        var a = document.createElement("a");
-        a.href = "https://" + tagName + "." + hostname;
-        a.textContent = tagText;
-        a.setAttribute("rel", "tag");
-        container.appendChild(a);
-      {% endfor %}
-    });
-  </script>
+    var container = document.getElementById("tag-list");
+
+    {% for tag in site.tags %}
+      var tagName = "{{ tag[0] | slugify }}"; 
+      var tagText = "{{ tag[0] }}"; // only tag name
+
+      var a = document.createElement("a");
+      a.href = "https://" + tagName + "." + baseDomain;
+      a.textContent = tagText;
+      a.setAttribute("rel", "tag");
+      container.appendChild(a);
+    {% endfor %}
+  });
+</script>
+    
+  
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

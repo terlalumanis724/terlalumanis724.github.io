@@ -39,6 +39,10 @@ plugins:
   - jekyll-seo-tag
   - jekyll-archives
   - jekyll-tagging
+  
+# Optional: untuk path tag page
+tag_page_dir: tag
+tag_layout: tag
     
 # Archives
 jekyll-archives:

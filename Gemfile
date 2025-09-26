@@ -18,4 +18,5 @@ group :jekyll_plugins do
     gem 'kramdown'
     gem 'jekyll-tagging'
     gem 'rouge'
+    gem "jekyll", "~> 4.3"
 end

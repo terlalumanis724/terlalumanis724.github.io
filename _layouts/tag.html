@@ -2,12 +2,11 @@
 layout: default
 ---
 
-<h2>Posts tagged with "{{ page.tag }}"</h2>
-
+<h2>Posts with tag: {{ page.tag }}</h2>
 <ul>
-  {% for post in page.posts %}
+  {% for post in site.tags[page.tag] %}
     <li>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date: "%Y-%m-%d" }})
     </li>
   {% endfor %}
 </ul>

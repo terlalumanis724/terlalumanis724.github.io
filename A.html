@@ -72,31 +72,61 @@ layout: null
 
   
       <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var hostname = window.location.hostname;
-    var parts = hostname.split("."); 
+document.addEventListener("DOMContentLoaded", function () {
+  var hostname = window.location.hostname.toLowerCase();
 
-    // ambil 2 bagian terakhir → domain + TLD (misal: domainku.my.id)
-    var baseDomain = parts.slice(-2).join(".");
+  function getBaseDomain(host) {
+    var parts = host.split(".");
+    if (parts.length <= 2) return host;
 
-    var container = document.getElementById("tag-list");
+    // Daftar suffix umum dua-level (heuristic). Tambah sesuai kebutuhan.
+    var twoLevelSuffixes = [
+      "co.uk","gov.uk","ac.uk","sch.uk",
+      "com.au","net.au","org.au","edu.au","gov.au",
+      "co.id","my.id","ac.id","sch.id","or.id","net.id",
+      "co.nz","ac.nz",
+      "co.jp","ne.jp","or.jp"
+    ];
 
-    {% for tag in site.tags %}
-      var tagName = "{{ tag[0] | slugify }}"; 
-      var tagText = "{{ tag[0] }}"; // only tag name
+    var last2 = parts.slice(-2).join(".");
+    // Jika last2 termasuk dalam daftar two-level suffix,
+    // maka base domain = bagian 3 terakhir (domain + last2)
+    if (twoLevelSuffixes.indexOf(last2) !== -1) {
+      return parts.slice(-3).join(".");
+    }
+
+    // Default: ambil domain + tld (2 bagian terakhir)
+    return last2;
+  }
+
+  var baseDomain = getBaseDomain(hostname);
+  var container = document.getElementById("tag-list");
+
+  {% for tag in site.tags %}
+    (function() {
+      var tagName = "{{ tag[0] | slugify }}";
+      var tagText = "{{ tag[0] }}";
 
       var a = document.createElement("a");
       a.href = "https://" + tagName + "." + baseDomain;
       a.textContent = tagText;
       a.setAttribute("rel", "tag");
       container.appendChild(a);
-    {% endfor %}
-  });
+    })();
+  {% endfor %}
+});
 </script>
+  
     
   
 </body>
 </html>
+
+
+
+
+
+
 
 
 

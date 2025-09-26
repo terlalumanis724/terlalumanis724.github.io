@@ -1,12 +1,13 @@
 ---
-title: "Tags"
-layout: default
-permalink: "/tags.html"
+layout: null
 ---
 
 <h2>Posts tagged with "{{ page.tag }}"</h2>
+
 <ul>
   {% for post in page.posts %}
-    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+    <li>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </li>
   {% endfor %}
 </ul>

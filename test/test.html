@@ -2,6 +2,28 @@
 layout: null
 ---
 
+<style>
+  #tag-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+}
+#tag-list a {
+  display: block;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #444;
+  transition: all 0.2s ease;
+}
+#tag-list a:hover {
+  background: #2563eb;
+  color: white;
+}
+</style>
 <div id="tag-list"></div>
 
 <script>

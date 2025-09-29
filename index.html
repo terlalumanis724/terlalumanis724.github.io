@@ -152,7 +152,7 @@ layout: null
 }
 .pagination button {
   background: #0073e6;
-  color: #fff;
+  color: #ff5000;
   border: none;
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
@@ -260,7 +260,7 @@ layout: null
   <div id="pagination" class="pagination"></div>      
 </section>      
 
-<script>      
+<script>
 function getCategoryCandidates(hostname) {      
   const parts = hostname.split('.');      
   if (parts.length < 2) return { sub: null, domain: null };      
@@ -288,30 +288,38 @@ fetch('/posts.json')
   .then(posts => {      
     const normalize = s => String(s || '').replace(/[-.]+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();      
     if (!Array.isArray(posts) || posts.length === 0) {      
-      return renderFallback(posts);      
+      return renderNoPosts();      
     }      
 
+    // filter berdasarkan kategori subdomain
     if (subCategory) {      
       filteredPosts = posts.filter(p =>      
         Array.isArray(p.categories) &&      
         p.categories.some(c => normalize(c) === subCategory)      
       );      
     }      
+
+    // jika kosong, coba domain
     if (filteredPosts.length === 0 && domainCategory) {      
       filteredPosts = posts.filter(p =>      
         Array.isArray(p.categories) &&      
         p.categories.some(c => normalize(c) === domainCategory)      
       );      
     }      
+
+    // fallback: semua post
     if (filteredPosts.length === 0) {      
-      return renderFallback(posts);      
+      filteredPosts = posts;      
     }      
+
+    // urutkan berdasarkan tanggal terbaru
+    filteredPosts.sort((a, b) => new Date(b.date) - new Date(a.date));      
 
     renderPosts();      
   })      
   .catch(err => {      
     console.error('Error loading posts:', err);      
-    renderFallback([]);      
+    renderNoPosts();      
   });      
 
 function renderPosts() {      
@@ -361,6 +369,39 @@ function renderPosts() {
         renderPosts();      
       }      
     };      
+    pagination.appendChild(prevBtn);      
+
+    // tampilkan range halaman dengan ellipsis
+    const maxVisible = 5; // jumlah halaman terlihat di sekitar current
+    let startPage = Math.max(1, currentPage - 2);      
+    let endPage = Math.min(totalPages, currentPage + 2);      
+
+    if (currentPage <= 3) {      
+      endPage = Math.min(totalPages, maxVisible);      
+    } else if (currentPage >= totalPages - 2) {      
+      startPage = Math.max(1, totalPages - maxVisible + 1);      
+    }      
+
+    // halaman pertama
+    if (startPage > 1) {      
+      addPageButton(1);      
+      if (startPage > 2) {      
+        addEllipsis();      
+      }      
+    }      
+
+    // halaman tengah
+    for (let i = startPage; i <= endPage; i++) {      
+      addPageButton(i);      
+    }      
+
+    // halaman terakhir
+    if (endPage < totalPages) {      
+      if (endPage < totalPages - 1) {      
+        addEllipsis();      
+      }      
+      addPageButton(totalPages);      
+    }      
 
     const nextBtn = document.createElement('button');      
     nextBtn.textContent = 'Next';      
@@ -371,59 +412,37 @@ function renderPosts() {
         renderPosts();      
       }      
     };      
-
-    pagination.appendChild(prevBtn);      
-    const info = document.createElement('span');      
-    info.textContent = ` Page ${currentPage} of ${totalPages} `;      
-    pagination.appendChild(info);      
     pagination.appendChild(nextBtn);      
   }      
 }      
 
-function shuffleArray(arr) {      
-  return arr      
-    .map(v => ({ v, sort: Math.random() }))      
-    .sort((a, b) => a.sort - b.sort)      
-    .map(({ v }) => v);      
+function addPageButton(page) {      
+  const pagination = document.getElementById('pagination');      
+  const pageBtn = document.createElement('button');      
+  pageBtn.textContent = page;      
+  if (page === currentPage) {      
+    pageBtn.disabled = true;      
+    pageBtn.style.fontWeight = 'bold';      
+  }      
+  pageBtn.onclick = () => {      
+    currentPage = page;      
+    renderPosts();      
+  };      
+  pagination.appendChild(pageBtn);      
 }      
 
-function renderFallback(posts) {      
+function addEllipsis() {      
+  const pagination = document.getElementById('pagination');      
+  const span = document.createElement('span');      
+  span.textContent = '…';      
+  pagination.appendChild(span);      
+}      
+
+function renderNoPosts() {      
   const container = document.getElementById('recent-posts-container');      
   const pagination = document.getElementById('pagination');      
-  container.innerHTML = '';      
+  container.innerHTML = '<p>No posts found.</p>';      
   pagination.innerHTML = '';      
-
-  if (Array.isArray(posts) && posts.length) {      
-    const randomPosts = shuffleArray(posts).slice(0, POSTS_PER_PAGE);      
-    randomPosts.forEach(post => {      
-      const card = document.createElement('div');      
-      card.className = 'post-card';      
-
-      const linkImg = document.createElement('a');      
-      linkImg.href = post.url || '#';      
-      const img = document.createElement('img');      
-      img.loading = 'lazy';      
-      img.alt = post.title || '';      
-      img.style.width = '100%';      
-      img.style.height = 'auto';      
-      img.src = post.image || '/assets/default-thumb.jpg';      
-      linkImg.appendChild(img);      
-      card.appendChild(linkImg);      
-
-      const h3 = document.createElement('h3');      
-      const a = document.createElement('a');      
-      a.href = post.url || '#';      
-      a.textContent = post.title || '(no title)';      
-      h3.appendChild(a);      
-      card.appendChild(h3);      
-
-      container.appendChild(card);      
-    });      
-  } else {      
-    const msg = document.createElement('p');      
-    msg.textContent = 'No posts found.';      
-    container.appendChild(msg);      
-  }      
 }      
 </script>
 
@@ -826,21 +845,3 @@ function renderFallback(posts) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

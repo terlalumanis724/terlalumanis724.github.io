@@ -1,3 +1,4 @@
+
 <!-- CSS Fluid Player -->
 <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css">
 <!-- JS Fluid Player -->
@@ -6,7 +7,7 @@
 <style>
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
   height: 0;
   overflow: hidden;
   max-width: 100%;
@@ -19,91 +20,65 @@
   top: 0; left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 12px;
 }
 </style>
 
-<div class="video-container">
-  <video id="video01" controls preload="metadata" playsinline title="keywordxxxxo092 keywordxxxxo093 keywordxxxxo094 keywordxxxxo095"></video>
-</div>
-
-<div class="video-container">
-  <video id="video02" controls preload="metadata" playsinline title="keywordxxxxo192 keywordxxxxo193 keywordxxxxo194 keywordxxxxo195"></video>
-</div>
-
-<div class="video-container">
-  <video id="video03" controls preload="metadata" playsinline title="keywordxxxxo292 keywordxxxxo293 keywordxxxxo294 keywordxxxxo295"></video>
-</div>
-
-<div class="video-container">
-  <video id="video04" controls preload="metadata" playsinline title="keywordxxxxo392 keywordxxxxo393 keywordxxxxo394 keywordxxxxo395"></video>
-</div>
-
-<div class="video-container">
-  <video id="video05" controls preload="metadata" playsinline title="keywordxxxxo492 keywordxxxxo493 keywordxxxxo494 keywordxxxxo495"></video>
-</div>
-
-<div class="video-container">
-  <video id="video06" controls preload="metadata" playsinline title="keywordxxxxo592 keywordxxxxo593 keywordxxxxo594 keywordxxxxo595"></video>
-</div>
-
-<div class="video-container">
-  <video id="video07" controls preload="metadata" playsinline title="keywordxxxxo692 keywordxxxxo693 keywordxxxxo694 keywordxxxxo695"></video>
-</div>
-
-<div class="video-container">
-  <video id="video08" controls preload="metadata" playsinline title="keywordxxxxo792 keywordxxxxo793 keywordxxxxo794 keywordxxxxo795"></video>
-</div>
-
-<div class="video-container">
-  <video id="video09" controls preload="metadata" playsinline title="keywordxxxxo892 keywordxxxxo893 keywordxxxxo894 keywordxxxxo895"></video>
-</div>
-
-<div class="video-container">
-  <video id="video10" controls preload="metadata" playsinline title="keywordxxxxo992 keywordxxxxo993 keywordxxxxo994 keywordxxxxo995"></video>
-</div>
-
-
+<div id="video-wrapper"></div>
 
 <script>
-  var domain = window.location.origin; 
-  var videoBase = domain + "/video/";
-  var photoBase = domain + "/photo/";
+  // Path file (selalu dari root domain)
+  var videoBase = "/video/";
+  var photoBase = "/photo/";
 
+  // Daftar video
   var videos = [
-    {id:"video01", src:"leaked-01.mp4", poster:"fallback-01.png"},
-    {id:"video02", src:"leaked-02.mp4", poster:"fallback-02.png"},
-    {id:"video03", src:"leaked-03.mp4", poster:"fallback-03.png"},
-    {id:"video04", src:"leaked-04.mp4", poster:"fallback-04.png"},
-    {id:"video05", src:"leaked-05.mp4", poster:"fallback-05.png"},
-    {id:"video06", src:"leaked-06.mp4", poster:"fallback-06.png"},
-    {id:"video07", src:"leaked-07.mp4", poster:"fallback-07.png"},
-    {id:"video08", src:"leaked-08.mp4", poster:"fallback-08.png"},
-    {id:"video09", src:"leaked-09.mp4", poster:"fallback-09.png"},
-    {id:"video10", src:"leaked-10.mp4", poster:"fallback-10.png"}
+    {id:"video01", src:"leaked-01.mp4", poster:"fallback-01.png", title:"keywordxxxxo092 keywordxxxxo093 keywordxxxxo094 keywordxxxxo095"},
+    {id:"video02", src:"leaked-02.mp4", poster:"fallback-02.png", title:"keywordxxxxo192 keywordxxxxo193 keywordxxxxo194 keywordxxxxo195"},
+    {id:"video03", src:"leaked-03.mp4", poster:"fallback-03.png", title:"keywordxxxxo292 keywordxxxxo293 keywordxxxxo294 keywordxxxxo295"},
+    {id:"video04", src:"leaked-04.mp4", poster:"fallback-04.png", title:"keywordxxxxo392 keywordxxxxo393 keywordxxxxo394 keywordxxxxo395"},
+    {id:"video05", src:"leaked-05.mp4", poster:"fallback-05.png", title:"keywordxxxxo492 keywordxxxxo493 keywordxxxxo494 keywordxxxxo495"},
+    {id:"video06", src:"leaked-06.mp4", poster:"fallback-06.png", title:"keywordxxxxo592 keywordxxxxo593 keywordxxxxo594 keywordxxxxo595"},
+    {id:"video07", src:"leaked-07.mp4", poster:"fallback-07.png", title:"keywordxxxxo692 keywordxxxxo693 keywordxxxxo694 keywordxxxxo695"},
+    {id:"video08", src:"leaked-08.mp4", poster:"fallback-08.png", title:"keywordxxxxo792 keywordxxxxo793 keywordxxxxo794 keywordxxxxo795"},
+    {id:"video09", src:"leaked-09.mp4", poster:"fallback-09.png", title:"keywordxxxxo892 keywordxxxxo893 keywordxxxxo894 keywordxxxxo895"},
+    {id:"video10", src:"leaked-10.mp4", poster:"fallback-10.png", title:"keywordxxxxo992 keywordxxxxo993 keywordxxxxo994 keywordxxxxo995"}
   ];
 
+  // Generate video container secara otomatis
+  var wrapper = document.getElementById("video-wrapper");
   videos.forEach(function(v){
-    var el = document.getElementById(v.id);
-    if(el){
-      var source = document.createElement("source");
-      source.src = videoBase + v.src;
-      source.type = "video/mp4";
-      el.appendChild(source);
-      el.setAttribute("poster", photoBase + v.poster);
+    var container = document.createElement("div");
+    container.className = "video-container";
 
-      el.addEventListener("loadedmetadata", function(){
-        fluidPlayer(v.id, {
-          layoutControls: {
-            fillToContainer: true,
-            autoPlay: false,
-            playButtonShowing: true,
-            posterImage: true,
-            playbackRateEnabled: true,
-            controlBar: { autoHide: true }
-          }
-        });
-      }, {once:true});
-    }
+    var video = document.createElement("video");
+    video.id = v.id;
+    video.setAttribute("controls", "true");
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("preload", "none"); // hemat bandwidth
+    video.setAttribute("poster", photoBase + v.poster);
+    video.setAttribute("title", v.title);
+    video.setAttribute("loading", "lazy"); // lazy load
+
+    var source = document.createElement("source");
+    source.src = videoBase + v.src;
+    source.type = "video/mp4";
+
+    video.appendChild(source);
+    container.appendChild(video);
+    wrapper.appendChild(container);
+
+    // Inisialisasi FluidPlayer
+    fluidPlayer(v.id, {
+      layoutControls: {
+        fillToContainer: true,
+        autoPlay: false,
+        playButtonShowing: true,
+        posterImage: true,
+        playbackRateEnabled: true,
+        controlBar: { autoHide: true }
+      }
+    });
   });
 </script>
 

@@ -1,4 +1,3 @@
-
 <div id="maulinarahayu" style="display:none; white-space:pre-line;">
 therock
 
@@ -4078,55 +4077,52 @@ soarespattyzinha
   <video id="video10" controls preload="metadata" playsinline title="keywordxxxxo992 keywordxxxxo993 keywordxxxxo994 keywordxxxxo995"></video>
 </div>
 
+
+
 <script>
-(function(){
+  var domain = window.location.origin; 
+  var videoBase = domain + "/video/";
+  var photoBase = domain + "/photo/";
+
   var videos = [
-    {id:"video01", src:"/video/leaked-01.mp4", poster:"/photo/fallback-01.png"},
-    {id:"video02", src:"/video/leaked-02.mp4", poster:"/photo/fallback-02.png"},
-    {id:"video03", src:"/video/leaked-03.mp4", poster:"/photo/fallback-03.png"},
-    {id:"video04", src:"/video/leaked-04.mp4", poster:"/photo/fallback-04.png"},
-    {id:"video05", src:"/video/leaked-05.mp4", poster:"/photo/fallback-05.png"},
-    {id:"video06", src:"/video/leaked-06.mp4", poster:"/photo/fallback-06.png"},
-    {id:"video07", src:"/video/leaked-07.mp4", poster:"/photo/fallback-07.png"},
-    {id:"video08", src:"/video/leaked-08.mp4", poster:"/photo/fallback-08.png"},
-    {id:"video09", src:"/video/leaked-09.mp4", poster:"/photo/fallback-09.png"},
-    {id:"video10", src:"/video/leaked-10.mp4", poster:"/photo/fallback-10.png"}
+    {id:"video01", src:"leaked-01.mp4", poster:"fallback-01.png"},
+    {id:"video02", src:"leaked-02.mp4", poster:"fallback-02.png"},
+    {id:"video03", src:"leaked-03.mp4", poster:"fallback-03.png"},
+    {id:"video04", src:"leaked-04.mp4", poster:"fallback-04.png"},
+    {id:"video05", src:"leaked-05.mp4", poster:"fallback-05.png"},
+    {id:"video06", src:"leaked-06.mp4", poster:"fallback-06.png"},
+    {id:"video07", src:"leaked-07.mp4", poster:"fallback-07.png"},
+    {id:"video08", src:"leaked-08.mp4", poster:"fallback-08.png"},
+    {id:"video09", src:"leaked-09.mp4", poster:"fallback-09.png"},
+    {id:"video10", src:"leaked-10.mp4", poster:"fallback-10.png"}
   ];
 
   videos.forEach(function(v){
     var el = document.getElementById(v.id);
     if(el){
-      // tambahkan source
       var source = document.createElement("source");
-      source.src = v.src;
+      source.src = videoBase + v.src;
       source.type = "video/mp4";
       el.appendChild(source);
-      el.setAttribute("poster", v.poster);
+      el.setAttribute("poster", photoBase + v.poster);
 
-      // inisialisasi Fluid Player setelah video siap
       el.addEventListener("loadedmetadata", function(){
         fluidPlayer(v.id, {
           layoutControls: {
             fillToContainer: true,
-            primaryColor: "#ff4d4d",
-            playButtonShowing: true,
             autoPlay: false,
+            playButtonShowing: true,
             posterImage: true,
-            controlBar: {
-              autoHide: true,
-              autoHideTimeout: 3,
-              animated: true
-            },
             playbackRateEnabled: true,
-            allowDownload: false,
-            allowTheatre: true
+            controlBar: { autoHide: true }
           }
         });
       }, {once:true});
     }
   });
-})();
 </script>
+
+
 
 
 <ul  id="video-schemaxxxxo" class="video-gallery">
@@ -6259,4 +6255,5 @@ soarespattyzinha
   });
 })();
 </script>
+
 

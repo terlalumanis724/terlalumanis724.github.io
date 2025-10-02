@@ -1,84 +1,245 @@
 
-<!-- CSS Fluid Player -->
+<!-- FluidPlayer CSS & JS (letakkan di head atau sebelum script ini) -->
 <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css">
-<!-- JS Fluid Player -->
 <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
 
 <style>
+/* Container & aspect ratio */
+.video-wrapper { display:flex; flex-direction:column; gap:20px; }
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  height: 0;
-  overflow: hidden;
-  max-width: 100%;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
   background: #000;
   border-radius: 12px;
-  margin-bottom: 20px;
+  overflow: hidden;
 }
-.video-container video {
+
+/* Poster image (fills container) */
+.video-container img.vp-poster-img {
   position: absolute;
-  top: 0; left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Play button */
+.vp-play-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* Small accessibility text */
+.vp-play-hint {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 46px);
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+/* Video element (when inserted) */
+.video-container video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   border-radius: 12px;
+}
+
+/* Error message */
+.vp-error {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: #fff;
+  padding: 16px;
+  font-size: 14px;
+  text-align:center;
 }
 </style>
 
-<div id="video-wrapper"></div>
+<!-- Wrapper tempat video akan dibuat -->
+<div id="video-wrapper" class="video-wrapper" aria-live="polite"></div>
 
 <script>
-  // Path file (selalu dari root domain)
-  var videoBase = "/video/";
-  var photoBase = "/photo/";
+document.addEventListener('DOMContentLoaded', function () {
+  // === CONFIG ===
+  var videoBase = "/video/"; // path root ke video
+  var photoBase = "/photo/"; // path root ke poster
+  var enablePreloadOnView = true; // kalau false, tidak akan menambahkan <link preload>
+  var preloadRootMargin = "300px 0px 300px 0px"; // jarak sebelum viewport untuk preload hint
 
-  // Daftar video
   var videos = [
-    {id:"video01", src:"leaked-01.mp4", poster:"fallback-01.png", title:"keywordxxxxo092 keywordxxxxo093 keywordxxxxo094 keywordxxxxo095"},
-    {id:"video02", src:"leaked-02.mp4", poster:"fallback-02.png", title:"keywordxxxxo192 keywordxxxxo193 keywordxxxxo194 keywordxxxxo195"},
-    {id:"video03", src:"leaked-03.mp4", poster:"fallback-03.png", title:"keywordxxxxo292 keywordxxxxo293 keywordxxxxo294 keywordxxxxo295"},
-    {id:"video04", src:"leaked-04.mp4", poster:"fallback-04.png", title:"keywordxxxxo392 keywordxxxxo393 keywordxxxxo394 keywordxxxxo395"},
-    {id:"video05", src:"leaked-05.mp4", poster:"fallback-05.png", title:"keywordxxxxo492 keywordxxxxo493 keywordxxxxo494 keywordxxxxo495"},
-    {id:"video06", src:"leaked-06.mp4", poster:"fallback-06.png", title:"keywordxxxxo592 keywordxxxxo593 keywordxxxxo594 keywordxxxxo595"},
-    {id:"video07", src:"leaked-07.mp4", poster:"fallback-07.png", title:"keywordxxxxo692 keywordxxxxo693 keywordxxxxo694 keywordxxxxo695"},
-    {id:"video08", src:"leaked-08.mp4", poster:"fallback-08.png", title:"keywordxxxxo792 keywordxxxxo793 keywordxxxxo794 keywordxxxxo795"},
-    {id:"video09", src:"leaked-09.mp4", poster:"fallback-09.png", title:"keywordxxxxo892 keywordxxxxo893 keywordxxxxo894 keywordxxxxo895"},
-    {id:"video10", src:"leaked-10.mp4", poster:"fallback-10.png", title:"keywordxxxxo992 keywordxxxxo993 keywordxxxxo994 keywordxxxxo995"}
+    {src:"leaked-01.mp4", poster:"fallback-01.png", title:"keywordxxxxo092 keywordxxxxo093"},
+    {src:"leaked-02.mp4", poster:"fallback-02.png", title:"keywordxxxxo192 keywordxxxxo193"},
+    {src:"leaked-03.mp4", poster:"fallback-03.png", title:"keywordxxxxo292 keywordxxxxo293"},
+    {src:"leaked-04.mp4", poster:"fallback-04.png", title:"keywordxxxxo392 keywordxxxxo393"},
+    {src:"leaked-05.mp4", poster:"fallback-05.png", title:"keywordxxxxo492 keywordxxxxo493"},
+    {src:"leaked-06.mp4", poster:"fallback-06.png", title:"keywordxxxxo592 keywordxxxxo593"},
+    {src:"leaked-07.mp4", poster:"fallback-07.png", title:"keywordxxxxo692 keywordxxxxo693"},
+    {src:"leaked-08.mp4", poster:"fallback-08.png", title:"keywordxxxxo792 keywordxxxxo793"},
+    {src:"leaked-09.mp4", poster:"fallback-09.png", title:"keywordxxxxo892 keywordxxxxo893"},
+    {src:"leaked-10.mp4", poster:"fallback-10.png", title:"keywordxxxxo992 keywordxxxxo993"}
   ];
+  // ==============
 
-  // Generate video container secara otomatis
-  var wrapper = document.getElementById("video-wrapper");
-  videos.forEach(function(v){
-    var container = document.createElement("div");
-    container.className = "video-container";
+  var wrapper = document.getElementById('video-wrapper');
 
-    var video = document.createElement("video");
-    video.id = v.id;
-    video.setAttribute("controls", "true");
-    video.setAttribute("playsinline", "true");
-    video.setAttribute("preload", "none"); // hemat bandwidth
-    video.setAttribute("poster", photoBase + v.poster);
-    video.setAttribute("title", v.title);
-    video.setAttribute("loading", "lazy"); // lazy load
+  // Utility: tunggu fluidPlayer ready
+  function waitForFluidPlayer(cb, attempts = 0) {
+    if (typeof window.fluidPlayer === 'function') return cb();
+    if (attempts > 50) { console.error('FluidPlayer tidak tersedia.'); return; }
+    setTimeout(function(){ waitForFluidPlayer(cb, attempts + 1); }, 100);
+  }
 
-    var source = document.createElement("source");
-    source.src = videoBase + v.src;
-    source.type = "video/mp4";
+  // Buat placeholder untuk setiap video
+  videos.forEach(function(v, idx){
+    var container = document.createElement('div');
+    container.className = 'video-container placeholder';
+    container.setAttribute('data-src', videoBase + v.src);
+    container.setAttribute('data-poster', photoBase + v.poster);
+    container.setAttribute('data-title', v.title || '');
+    container.setAttribute('data-idx', idx);
 
-    video.appendChild(source);
-    container.appendChild(video);
+    // Poster image (lazy)
+    var img = document.createElement('img');
+    img.className = 'vp-poster-img';
+    img.loading = 'lazy';
+    img.alt = v.title || ('Video ' + (idx+1));
+    img.src = photoBase + v.poster; // browser akan lazy-load gambar
+    container.appendChild(img);
+
+    // Play button
+    var playBtn = document.createElement('button');
+    playBtn.className = 'vp-play-btn';
+    playBtn.setAttribute('aria-label', 'Play video');
+    playBtn.innerHTML = '&#9658;'; // triangle
+    container.appendChild(playBtn);
+
+    // Hint kecil
+    var hint = document.createElement('div');
+    hint.className = 'vp-play-hint';
+    hint.textContent = 'Tap to play';
+    container.appendChild(hint);
+
     wrapper.appendChild(container);
 
-    // Inisialisasi FluidPlayer
-    fluidPlayer(v.id, {
-      layoutControls: {
-        fillToContainer: true,
-        autoPlay: false,
-        playButtonShowing: true,
-        posterImage: true,
-        playbackRateEnabled: true,
-        controlBar: { autoHide: true }
-      }
-    });
-  });
-</script>
+    // Click handler — bikin video element & init FluidPlayer
+    playBtn.addEventListener('click', function onClickInit(e){
+      // Prevent double-init
+      if (container.dataset.inited) return;
+      container.dataset.inited = '1';
 
+      var src = container.getAttribute('data-src');
+      var poster = container.getAttribute('data-poster');
+      var title = container.getAttribute('data-title') || '';
+
+      // Buat video element
+      var vid = document.createElement('video');
+      var vidId = 'fp-video-' + (idx+1) + '-' + Date.now();
+      vid.id = vidId;
+      vid.setAttribute('controls', '');
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('preload', 'metadata'); // hanya metadata
+      vid.setAttribute('title', title);
+
+      // source
+      var source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      vid.appendChild(source);
+
+      // Ganti isi container dengan video
+      container.innerHTML = '';
+      container.appendChild(vid);
+
+      // Pastikan FluidPlayer siap, lalu inisialisasi
+      waitForFluidPlayer(function(){
+        try {
+          fluidPlayer(vidId, {
+            layoutControls: {
+              fillToContainer: true,
+              allowDownload: false,
+              autoPlay: false,
+              playButtonShowing: true,
+              posterImage: true,
+              playbackRateEnabled: true,
+              controlBar: { autoHide: true }
+            }
+          });
+        } catch (err) {
+          console.error('Gagal inisialisasi FluidPlayer:', err);
+        }
+      });
+
+      // Karena klik berasal dari user, video.play() biasanya diperbolehkan
+      vid.play().catch(function(err){
+        console.warn('Video.play() gagal (mungkin autoplay blocked):', err);
+      });
+
+      // Error handling
+      vid.addEventListener('error', function(ev){
+        console.error('Video error:', ev);
+        container.innerHTML = '<div class="vp-error">Video gagal dimuat. Cek file di /video/ atau lihat Console/Network.</div>';
+      });
+    });
+  }); // end foreach
+
+  // IntersectionObserver: saat placeholder hampir muncul, tambahkan <link rel="preload"> sebagai hint (optional)
+  if (enablePreloadOnView && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          var c = entry.target;
+          var src = c.getAttribute('data-src');
+          if (src && !c.dataset.preloadAdded) {
+            // tambahkan preload link (browser boleh mengabaikan)
+            try {
+              var link = document.createElement('link');
+              link.rel = 'preload';
+              link.as = 'video';
+              link.href = src;
+              document.head.appendChild(link);
+              c.dataset.preloadAdded = '1';
+              // optional: remove link later after some time
+              setTimeout(function(){ /* keep or remove if desired */ }, 30000);
+            } catch (e) {
+              console.warn('Preload hint gagal:', e);
+            }
+          }
+          // kita bisa unobserve biar tidak berulang
+          obs.unobserve(c);
+        }
+      });
+    }, { root: null, rootMargin: preloadRootMargin, threshold: 0.01 });
+
+    // observe semua placeholder
+    document.querySelectorAll('.video-container.placeholder').forEach(function(el){
+      io.observe(el);
+    });
+  }
+
+  // Debug: jika tidak muncul, cek console.log
+  console.log('[Video Lazy Player] ready. Count =', videos.length);
+});
+</script>

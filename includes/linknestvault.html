@@ -4011,8 +4011,44 @@ Jahara
 })();
 </script>
 
+<!--awal meta -->
+<script>
+(function() {
+  const origin = window.location.origin;
+  const videos = [
+    {src: "/video/leaked-01.mp4", poster: "/photo/fallback-01.png", title: "Video leaked-01"},
+    {src: "/video/leaked-02.mp4", poster: "/photo/fallback-02.png", title: "Video leaked-02"},
+    {src: "/video/leaked-03.mp4", poster: "/photo/fallback-03.png", title: "Video leaked-03"},
+    {src: "/video/leaked-04.mp4", poster: "/photo/fallback-04.png", title: "Video leaked-04"},
+    {src: "/video/leaked-05.mp4", poster: "/photo/fallback-05.png", title: "Video leaked-05"},
+    {src: "/video/leaked-06.mp4", poster: "/photo/fallback-06.png", title: "Video leaked-06"},
+    {src: "/video/leaked-07.mp4", poster: "/photo/fallback-07.png", title: "Video leaked-07"},
+    {src: "/video/leaked-08.mp4", poster: "/photo/fallback-08.png", title: "Video leaked-08"},
+    {src: "/video/leaked-09.mp4", poster: "/photo/fallback-09.png", title: "Video leaked-09"},
+    {src: "/video/leaked-10.mp4", poster: "/photo/fallback-10.png", title: "Video leaked-10"}
+  ];
 
+  let meta = '';
+  videos.forEach((v, i) => {
+    meta += `
+<meta property="og:video" content="${origin}${v.src}" />
+<meta property="og:video:secure_url" content="${origin}${v.src}" />
+<meta property="og:video:type" content="video/mp4" />
+<meta property="og:video:width" content="1280" />
+<meta property="og:video:height" content="720" />
+<meta property="og:image" content="${origin}${v.poster}" />
+<meta property="og:title" content="${v.title}" />
+<meta name="twitter:card" content="player" />
+<meta name="twitter:title" content="${v.title}" />
+<meta name="twitter:image" content="${origin}${v.poster}" />
+<meta name="twitter:player" content="${origin}${v.src}" />
+    `;
+  });
 
+  document.head.insertAdjacentHTML('beforeend', meta);
+})();
+</script>
+<!-- akhir meta -->
 
 <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css">
 

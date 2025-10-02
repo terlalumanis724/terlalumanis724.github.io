@@ -4,18 +4,15 @@
 .video-container {
   position: relative;
   width: 100%;
-  max-width: 900px;
+  max-width: 900px; /* batas biar ga terlalu lebar */
   margin: 1em auto;
-  padding-top: 56.25%; /* 16:9 */
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
 }
 .video-container video {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  background: #000;
 }
 .video-poster {
   position: absolute;
@@ -45,71 +42,74 @@
 
 <!-- 10 Video -->
 <div class="video-container" id="fp1" data-video="/video/leaked-01.mp4" data-poster="/photo/fallback-01.png">
-  <video id="video1" preload="none" playsinline controls poster="/photo/fallback-01.png"></video>
+  <video id="video1" preload="none" playsinline controls poster="/photo/fallback-01.png" title="Video leaked-01"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-01.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp2" data-video="/video/leaked-02.mp4" data-poster="/photo/fallback-02.png">
-  <video id="video2" preload="none" playsinline controls poster="/photo/fallback-02.png"></video>
+  <video id="video2" preload="none" playsinline controls poster="/photo/fallback-02.png" title="Video leaked-02"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-02.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp3" data-video="/video/leaked-03.mp4" data-poster="/photo/fallback-03.png">
-  <video id="video3" preload="none" playsinline controls poster="/photo/fallback-03.png"></video>
+  <video id="video3" preload="none" playsinline controls poster="/photo/fallback-03.png" title="Video leaked-03"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-03.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp4" data-video="/video/leaked-04.mp4" data-poster="/photo/fallback-04.png">
-  <video id="video4" preload="none" playsinline controls poster="/photo/fallback-04.png"></video>
+  <video id="video4" preload="none" playsinline controls poster="/photo/fallback-04.png" title="Video leaked-04"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-04.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp5" data-video="/video/leaked-05.mp4" data-poster="/photo/fallback-05.png">
-  <video id="video5" preload="none" playsinline controls poster="/photo/fallback-05.png"></video>
+  <video id="video5" preload="none" playsinline controls poster="/photo/fallback-05.png" title="Video leaked-05"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-05.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp6" data-video="/video/leaked-06.mp4" data-poster="/photo/fallback-06.png">
-  <video id="video6" preload="none" playsinline controls poster="/photo/fallback-06.png"></video>
+  <video id="video6" preload="none" playsinline controls poster="/photo/fallback-06.png" title="Video leaked-06"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-06.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp7" data-video="/video/leaked-07.mp4" data-poster="/photo/fallback-07.png">
-  <video id="video7" preload="none" playsinline controls poster="/photo/fallback-07.png"></video>
+  <video id="video7" preload="none" playsinline controls poster="/photo/fallback-07.png" title="Video leaked-07"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-07.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp8" data-video="/video/leaked-08.mp4" data-poster="/photo/fallback-08.png">
-  <video id="video8" preload="none" playsinline controls poster="/photo/fallback-08.png"></video>
+  <video id="video8" preload="none" playsinline controls poster="/photo/fallback-08.png" title="Video leaked-08"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-08.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp9" data-video="/video/leaked-09.mp4" data-poster="/photo/fallback-09.png">
-  <video id="video9" preload="none" playsinline controls poster="/photo/fallback-09.png"></video>
+  <video id="video9" preload="none" playsinline controls poster="/photo/fallback-09.png" title="Video leaked-09"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-09.png')"><span>▶</span></div>
 </div>
 
 <div class="video-container" id="fp10" data-video="/video/leaked-10.mp4" data-poster="/photo/fallback-10.png">
-  <video id="video10" preload="none" playsinline controls poster="/photo/fallback-10.png"></video>
+  <video id="video10" preload="none" playsinline controls poster="/photo/fallback-10.png" title="Video leaked-10"></video>
   <div class="video-poster" style="background-image:url('/photo/fallback-10.png')"><span>▶</span></div>
 </div>
 
 <noscript>
-  <video controls poster="/photo/fallback-01.png"><source src="/video/leaked-01.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-02.png"><source src="/video/leaked-02.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-03.png"><source src="/video/leaked-03.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-04.png"><source src="/video/leaked-04.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-05.png"><source src="/video/leaked-05.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-06.png"><source src="/video/leaked-06.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-07.png"><source src="/video/leaked-07.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-08.png"><source src="/video/leaked-08.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-09.png"><source src="/video/leaked-09.mp4" type="video/mp4"></video>
-  <video controls poster="/photo/fallback-10.png"><source src="/video/leaked-10.mp4" type="video/mp4"></video>
+  <p>Silakan aktifkan JavaScript untuk memutar video. Berikut tautan unduhan:</p>
+  <ul>
+    <li><a href="/video/leaked-01.mp4">Download Video 01</a></li>
+    <li><a href="/video/leaked-02.mp4">Download Video 02</a></li>
+    <li><a href="/video/leaked-03.mp4">Download Video 03</a></li>
+    <li><a href="/video/leaked-04.mp4">Download Video 04</a></li>
+    <li><a href="/video/leaked-05.mp4">Download Video 05</a></li>
+    <li><a href="/video/leaked-06.mp4">Download Video 06</a></li>
+    <li><a href="/video/leaked-07.mp4">Download Video 07</a></li>
+    <li><a href="/video/leaked-08.mp4">Download Video 08</a></li>
+    <li><a href="/video/leaked-09.mp4">Download Video 09</a></li>
+    <li><a href="/video/leaked-10.mp4">Download Video 10</a></li>
+  </ul>
 </noscript>
 
 <script>
 (function(){
-  function loadScriptOnce(src){
+  function loadScript(src){
     return new Promise((res,rej)=>{
       if(document.querySelector('script[src="'+src+'"]')) return res();
       const s=document.createElement('script');
@@ -119,43 +119,35 @@
     });
   }
 
-  async function initPlayer(wrapper, video){
-    if(wrapper.classList.contains('initialized')) return;
-    const source=document.createElement('source');
-    source.src=wrapper.dataset.video;
-    source.type='video/mp4';
-    video.appendChild(source);
-    await loadScriptOnce('https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js');
-    fluidPlayer(video.id,{
-      layoutControls:{
-        fillToContainer:true,
-        posterImage:wrapper.dataset.poster
-      }
-    });
-    wrapper.classList.add('initialized');
-  }
+  document.querySelectorAll('.video-container').forEach((wrapper,i)=>{
+    const video = wrapper.querySelector('video');
+    const poster = wrapper.querySelector('.video-poster');
+    const src = wrapper.dataset.video;
 
-  document.querySelectorAll('.video-container').forEach(wrapper=>{
-    const video=wrapper.querySelector('video');
-    const poster=wrapper.querySelector('.video-poster');
+    async function initPlayer(){
+      if(wrapper.classList.contains('initialized')) return;
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      await loadScript('https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js');
+      fluidPlayer(video.id,{ layoutControls:{ fillToContainer:true, posterImage:wrapper.dataset.poster } });
+      wrapper.classList.add('initialized');
+    }
 
-    poster.addEventListener('click', ()=>{
-      initPlayer(wrapper, video).then(()=>video.play());
-    });
+    poster.addEventListener('click', ()=>{ initPlayer().then(()=>video.play()); });
 
     if('IntersectionObserver' in window){
       const io=new IntersectionObserver((entries,obs)=>{
         entries.forEach(e=>{
-          if(e.isIntersecting){
-            initPlayer(wrapper, video);
-            obs.unobserve(wrapper);
-          }
+          if(e.isIntersecting){ initPlayer(); obs.unobserve(wrapper); }
         });
       },{rootMargin:"200px"});
       io.observe(wrapper);
     } else {
-      setTimeout(()=>initPlayer(wrapper, video),1500);
+      setTimeout(initPlayer,1500);
     }
   });
 })();
 </script>
+

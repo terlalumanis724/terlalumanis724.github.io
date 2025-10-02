@@ -1,4 +1,3 @@
-
 <div id="maulinarahayu" style="display:none; white-space:pre-line;">
 Pattyzinha soares
 
@@ -4013,39 +4012,58 @@ Jahara
 
 <!--awal meta -->
 <script>
-(function() {
+(function(){
   const origin = window.location.origin;
-  const videos = [
-    {src: "/video/leaked-01.mp4", poster: "/photo/fallback-01.png", title: "Video leaked-01"},
-    {src: "/video/leaked-02.mp4", poster: "/photo/fallback-02.png", title: "Video leaked-02"},
-    {src: "/video/leaked-03.mp4", poster: "/photo/fallback-03.png", title: "Video leaked-03"},
-    {src: "/video/leaked-04.mp4", poster: "/photo/fallback-04.png", title: "Video leaked-04"},
-    {src: "/video/leaked-05.mp4", poster: "/photo/fallback-05.png", title: "Video leaked-05"},
-    {src: "/video/leaked-06.mp4", poster: "/photo/fallback-06.png", title: "Video leaked-06"},
-    {src: "/video/leaked-07.mp4", poster: "/photo/fallback-07.png", title: "Video leaked-07"},
-    {src: "/video/leaked-08.mp4", poster: "/photo/fallback-08.png", title: "Video leaked-08"},
-    {src: "/video/leaked-09.mp4", poster: "/photo/fallback-09.png", title: "Video leaked-09"},
-    {src: "/video/leaked-10.mp4", poster: "/photo/fallback-10.png", title: "Video leaked-10"}
+  const metas = [
+    {id:1, video:"/video/leaked-01.mp4", poster:"/photo/fallback-01.png"},
+    {id:2, video:"/video/leaked-02.mp4", poster:"/photo/fallback-02.png"},
+    {id:3, video:"/video/leaked-03.mp4", poster:"/photo/fallback-03.png"},
+    {id:4, video:"/video/leaked-04.mp4", poster:"/photo/fallback-04.png"},
+    {id:5, video:"/video/leaked-05.mp4", poster:"/photo/fallback-05.png"},
+    {id:6, video:"/video/leaked-06.mp4", poster:"/photo/fallback-06.png"},
+    {id:7, video:"/video/leaked-07.mp4", poster:"/photo/fallback-07.png"},
+    {id:8, video:"/video/leaked-08.mp4", poster:"/photo/fallback-08.png"},
+    {id:9, video:"/video/leaked-09.mp4", poster:"/photo/fallback-09.png"},
+    {id:10, video:"/video/leaked-10.mp4", poster:"/photo/fallback-10.png"},
   ];
 
-  let meta = '';
-  videos.forEach((v, i) => {
-    meta += `
-<meta property="og:video" content="${origin}${v.src}" />
-<meta property="og:video:secure_url" content="${origin}${v.src}" />
-<meta property="og:video:type" content="video/mp4" />
-<meta property="og:video:width" content="1280" />
-<meta property="og:video:height" content="720" />
-<meta property="og:image" content="${origin}${v.poster}" />
-<meta property="og:title" content="${v.title}" />
-<meta name="twitter:card" content="player" />
-<meta name="twitter:title" content="${v.title}" />
-<meta name="twitter:image" content="${origin}${v.poster}" />
-<meta name="twitter:player" content="${origin}${v.src}" />
-    `;
-  });
+  metas.forEach(m=>{
+    const head = document.getElementsByTagName('head')[0];
+    const title = "Video leaked-" + String(m.id).padStart(2,"0");
+    const desc = "Watch leaked video number " + m.id;
+    const img = origin + m.poster;
+    const vid = origin + m.video;
 
-  document.head.insertAdjacentHTML('beforeend', meta);
+    // --- Twitter ---
+    [
+      {n:"twitter:card", c:"summary_large_image"},
+      {n:"twitter:title", c:title},
+      {n:"twitter:description", c:desc},
+      {n:"twitter:image", c:img},
+      {n:"twitter:player", c:vid}
+    ].forEach(obj=>{
+      let meta = document.createElement("meta");
+      meta.setAttribute("name",obj.n);
+      meta.content = obj.c;
+      head.appendChild(meta);
+    });
+
+    // --- Open Graph ---
+    [
+      {p:"og:type", c:"video.other"},
+      {p:"og:title", c:title},
+      {p:"og:description", c:desc},
+      {p:"og:image", c:img},
+      {p:"og:video", c:vid},
+      {p:"og:video:secure_url", c:vid},
+      {p:"og:video:type", c:"video/mp4"}
+    ].forEach(obj=>{
+      let meta = document.createElement("meta");
+      meta.setAttribute("property",obj.p);
+      meta.content = obj.c;
+      head.appendChild(meta);
+    });
+  });
 })();
 </script>
 <!-- akhir meta -->
@@ -6320,3 +6338,5 @@ Jahara
   });
 })();
 </script>
+
+

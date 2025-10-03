@@ -100,6 +100,76 @@ permalink: /search
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 
 <style>
+	/* Container hasil pencarian */
+.results {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Card hasil */
+.result {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  background: #fff;
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.result:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+/* Gambar thumbnail */
+.result img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* Konten hasil */
+.result-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.result-content h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.result-content h3 a {
+  text-decoration: none;
+  color: #0073e6;
+  font-weight: 600;
+}
+
+.result-content h3 a:hover {
+  text-decoration: underline;
+}
+
+/* Excerpt */
+.result-content p {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+/* Pesan kosong */
+.results p {
+  font-size: 1rem;
+  color: #777;
+  text-align: center;
+}
 .recent-posts {
   margin: 3rem auto;
   padding: 0 1rem;

@@ -1,0 +1,50 @@
+---
+layout: default
+title: Search
+permalink: /search
+---
+
+<h2>Search Results</h2>
+<div id="searchResults">Loading...</div>
+
+<script>
+async function runSearch() {
+  // Ambil query dari URL
+  const params = new URLSearchParams(window.location.search);
+  const query = (params.get("q") || "").toLowerCase();
+
+  if (!query) {
+    document.getElementById("searchResults").innerHTML = "<p>No query provided.</p>";
+    return;
+  }
+
+  // Ambil data dari search.json
+  const res = await fetch("/search.json");
+  const posts = await res.json();
+
+  // Cari kecocokan
+  const results = posts.filter(post =>
+    post.title.toLowerCase().includes(query) ||
+    post.content.toLowerCase().includes(query) ||
+    post.categories.join(" ").toLowerCase().includes(query)
+  );
+
+  // Tampilkan hasil
+  const container = document.getElementById("searchResults");
+  if (results.length === 0) {
+    container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
+    return;
+  }
+
+  container.innerHTML = results.map(p => `
+    <div class="result">
+      <a href="${p.url}">
+        <h3>${p.title}</h3>
+      </a>
+      <p>${p.content.substring(0,150)}...</p>
+    </div>
+  `).join("");
+}
+
+runSearch();
+</script>

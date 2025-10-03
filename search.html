@@ -190,7 +190,7 @@ permalink: /search
 })();
 </script>	
 
-
+<script src="https://unpkg.com/elasticlunr/elasticlunr.js"></script>
 	
   </head>
 <body>
@@ -272,76 +272,75 @@ permalink: /search
 
 <main>
 
-<h2>Search Results</h2>
-<div id="searchResults">Loading...</div>
+  <h2>Search Results</h2>
+  <div id="results">Loading...</div>
 
-<script>
-async function runSearch() {
-  // Ambil query dari URL
-  const params = new URLSearchParams(window.location.search);
-  const query = (params.get("q") || "").toLowerCase();
+  <script>
+  async function buildIndex() {
+    const res = await fetch("/sitemap.xml");
+    const xml = await res.text();
+    const urls = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
 
-  if (!query) {
-    document.getElementById("searchResults").innerHTML = "<p>No query provided.</p>";
-    return;
+    let docs = [];
+    for (let url of urls) {
+      try {
+        const html = await fetch(url).then(r => r.text());
+        const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+        const title = titleMatch ? titleMatch[1] : url;
+        const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+        docs.push({ id: url, title, content: text, url });
+      } catch(e) {}
+    }
+
+    const index = elasticlunr(function () {
+      this.addField('title');
+      this.addField('content');
+      this.setRef('id');
+      docs.forEach(doc => this.addDoc(doc));
+    });
+
+    return { index, docs };
   }
 
-  // Ambil data dari search.json
-  const res = await fetch("/search.json");
-  const posts = await res.json();
+  async function runSearch() {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("q");
+    const resultsDiv = document.getElementById("results");
 
-  // Cari kecocokan
-  const results = posts.filter(post =>
-    post.title.toLowerCase().includes(query) ||
-    post.content.toLowerCase().includes(query) ||
-    post.categories.join(" ").toLowerCase().includes(query)
-  );
+    if (!query) {
+      resultsDiv.innerHTML = "No query given.";
+      return;
+    }
 
-  // Tampilkan hasil
-  const container = document.getElementById("searchResults");
-  if (results.length === 0) {
-    container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
-    return;
+    resultsDiv.innerHTML = "Searching for <b>" + query + "</b>...";
+
+    const { index, docs } = await buildIndex();
+    const results = index.search(query, { expand: true });
+
+    if (results.length === 0) {
+      resultsDiv.innerHTML = "No results found.";
+      return;
+    }
+
+    resultsDiv.innerHTML = "";
+    results.forEach(r => {
+      const doc = docs.find(d => d.id === r.ref);
+      if (doc) {
+        const div = document.createElement("div");
+        div.innerHTML = `<a href="${doc.url}"><strong>${doc.title}</strong></a><br><small>${doc.url}</small>`;
+        resultsDiv.appendChild(div);
+      }
+    });
   }
 
-  container.innerHTML = results.map(p => `
-    <div class="result">
-      <a href="${p.url}">
-        <h3>${p.title}</h3>
-      </a>
-      <p>${p.content.substring(0,150)}...</p>
-    </div>
-  `).join("");
-}
+  runSearch();
+  </script>
 
-runSearch();
-</script>
 
 </main>
 
 
-<!-- awal search -->
-<div class="widget-search" role="search">
-  <form id="customSearchForm" method="get" action="/search/">
-    <a href="/" id="homeLink" class="home-btn" aria-label="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 24 24" width="22" height="22">
-        <path d="M3 10.5l9-7 9 7V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/>
-      </svg>
-    </a>
-    <input 
-      id="searchInput"
-      type="text"
-      name="q"
-      placeholder="Search..."
-      autocomplete="on"/>
-    <button type="submit" class="search-btn" aria-label="Search">
-      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="22" height="22" fill="currentColor">
-        <path d="M21 20l-5.8-5.8a7 7 0 10-1.4 1.4L20 21l1-1zM4 10a6 6 0 1112 0 6 6 0 01-12 0z"/>
-      </svg>
-    </button>
-  </form>
-</div>
-<!-- akhir search -->
+
 
     <br /><br />
 
@@ -647,4 +646,3 @@ runSearch();
 
 </body>
 </html>
-

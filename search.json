@@ -3,13 +3,15 @@ layout: null
 permalink: /search.json
 ---
 [
-  {% for post in site.posts %}
-  {
-    "title": {{ post.title | jsonify }},
-    "url": "{{ post.url | relative_url }}",
-    "image": {% if post.image %}{{ post.image | jsonify }}{% else %}"/assets/img/default.jpg"{% endif %},
-    "content": {{ post.content | strip_html | normalize_whitespace | jsonify }},
-    "categories": {{ post.categories | jsonify }}
-  }{% unless forloop.last %},{% endunless %}
+  {% assign allDocs = site.posts | concat: site.pages %}
+  {% for doc in allDocs %}
+    {% if doc.title and doc.content %}
+    {
+      "title": {{ doc.title | jsonify }},
+      "url": "{{ doc.url | relative_url }},
+      "content": {{ doc.content | strip_html | normalize_whitespace | jsonify }},
+      "categories": {% if doc.categories %}{{ doc.categories | jsonify }}{% else %}[] {% endif %}
+    }{% unless forloop.last %},{% endunless %}
+    {% endif %}
   {% endfor %}
 ]

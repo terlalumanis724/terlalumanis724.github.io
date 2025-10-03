@@ -7,7 +7,7 @@ permalink: /search.json
   {% for doc in allDocs %}
   {
     "title": {{ doc.title | jsonify }},
-    "url": "{{ doc.url | relative_url }}",
+    "url": {{ doc.url | relative_url }},
     "content": {{ doc.content | strip_html | normalize_whitespace | jsonify }},
     "categories": {% if doc.categories %}{{ doc.categories | jsonify }}{% else %}[] {% endif %}
   }{% unless forloop.last %},{% endunless %}

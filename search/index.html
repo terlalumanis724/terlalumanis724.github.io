@@ -1,0 +1,72 @@
+---
+layout: default
+title: Search Results
+permalink: /search/
+---
+
+<h2>Search Results</h2>
+<div id="search-query"></div>
+<ul id="search-results"></ul>
+
+<!-- Fuse.js -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const resultsList = document.getElementById("search-results");
+  const queryBox = document.getElementById("search-query");
+
+  // Ambil parameter q dari URL (?q=keyword)
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get("q") || "";
+
+  if (!query) {
+    queryBox.innerHTML = "<p>No search query provided.</p>";
+    return;
+  }
+
+  queryBox.innerHTML = `<p>Showing results for: <strong>${query}</strong></p>`;
+
+  // Ambil posts.json
+  fetch("/posts.json")
+    .then(res => res.json())
+    .then(posts => {
+      // Konfigurasi Fuse.js
+      const fuse = new Fuse(posts, {
+        keys: ["title", "excerpt", "categories"],
+        threshold: 0.3, // makin rendah makin ketat
+      });
+
+      // Cari berdasarkan query
+      const results = fuse.search(query);
+
+      if (results.length === 0) {
+        resultsList.innerHTML = "<li>No results found.</li>";
+        return;
+      }
+
+      // Render hasil
+      results.forEach(({ item }) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <a href="${item.url}">
+            <img src="${item.image}" alt="${item.title}" 
+                 style="width:60px;height:auto;margin-right:10px;vertical-align:middle;">
+            <span>${item.title}</span>
+          </a>
+          <p>${item.excerpt}</p>
+        `;
+        resultsList.appendChild(li);
+      });
+    });
+});
+</script>
+
+<style>
+#search-results li {
+  list-style: none;
+  margin-bottom: 15px;
+}
+#search-results img {
+  border-radius: 6px;
+}
+</style>

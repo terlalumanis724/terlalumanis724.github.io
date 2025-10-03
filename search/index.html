@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: null
 title: Search Results
 permalink: /search/
 ---
@@ -8,14 +8,12 @@ permalink: /search/
 <div id="search-query"></div>
 <ul id="search-results"></ul>
 
-<!-- Fuse.js -->
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const resultsList = document.getElementById("search-results");
   const queryBox = document.getElementById("search-query");
 
-  // Ambil parameter q dari URL (?q=keyword)
   const params = new URLSearchParams(window.location.search);
   const query = params.get("q") || "";
 
@@ -26,26 +24,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
   queryBox.innerHTML = `<p>Showing results for: <strong>${query}</strong></p>`;
 
-  // Ambil posts.json
   fetch("/posts.json")
     .then(res => res.json())
     .then(posts => {
-      // Konfigurasi Fuse.js
       const fuse = new Fuse(posts, {
         keys: ["title", "excerpt", "categories"],
-        threshold: 0.3, // makin rendah makin ketat
+        threshold: 0.4,
+        ignoreLocation: true,
+        findAllMatches: true,
       });
 
-      // Cari berdasarkan query
-      const results = fuse.search(query);
+      // split query jadi kata-kata
+      const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
 
-      if (results.length === 0) {
+      // hasil dari Fuse
+      const fuseResults = fuse.search(query).map(r => r.item);
+
+      // filter supaya semua terms ada
+      const filtered = fuseResults.filter(post => {
+        const text = (post.title + " " + post.excerpt + " " + post.categories.join(" ")).toLowerCase();
+        return terms.every(t => text.includes(t));
+      });
+
+      if (filtered.length === 0) {
         resultsList.innerHTML = "<li>No results found.</li>";
         return;
       }
 
-      // Render hasil
-      results.forEach(({ item }) => {
+      filtered.forEach(item => {
         const li = document.createElement("li");
         li.innerHTML = `
           <a href="${item.url}">
@@ -60,13 +66,3 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
-
-<style>
-#search-results li {
-  list-style: none;
-  margin-bottom: 15px;
-}
-#search-results img {
-  border-radius: 6px;
-}
-</style>

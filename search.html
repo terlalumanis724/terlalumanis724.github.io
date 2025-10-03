@@ -273,78 +273,96 @@ permalink: /search
 <main>
 
 
-<div id="searchResults">Loading...</div>
-<div id="pagination"></div>
 
-<script>
-async function runSearch() {
-  const params = new URLSearchParams(window.location.search);
-  const query = (params.get("q") || "").toLowerCase().trim();
-  const pageParam = parseInt(params.get("page") || "1", 10);
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .result { margin-bottom: 20px; }
+    .result h3 { margin: 0 0 5px; }
+    .result p { color: #555; }
+    .pagination { margin-top: 20px; }
+    .pagination a {
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      text-decoration: none;
+      color: #333;
+    }
+    .pagination a.active {
+      background: #333;
+      color: #fff;
+    }
+  </style>
 
-  const perPage = 10; // jumlah hasil per halaman
-  const container = document.getElementById("searchResults");
-  const pagination = document.getElementById("pagination");
+  <h2>Search Results</h2>
+  <div id="searchResults">Loading...</div>
+  <div id="pagination" class="pagination"></div>
 
-  if (!query) {
-    container.innerHTML = "<p>No query provided.</p>";
-    return;
-  }
+  <script>
+  async function runSearch() {
+    const params = new URLSearchParams(window.location.search);
+    const query = (params.get("q") || "").toLowerCase().trim();
+    const pageParam = parseInt(params.get("page") || "1", 10);
 
-  try {
-    const res = await fetch("{{ '/search.json' | relative_url }}");
-    const docs = await res.json();
+    const perPage = 10; // jumlah hasil per halaman
+    const container = document.getElementById("searchResults");
+    const pagination = document.getElementById("pagination");
 
-    // filter hasil
-    const results = docs.filter(doc =>
-      (doc.title && doc.title.toLowerCase().includes(query)) ||
-      (doc.content && doc.content.toLowerCase().includes(query)) ||
-      (doc.categories && doc.categories.join(" ").toLowerCase().includes(query)) ||
-      (doc.url && doc.url.toLowerCase().includes(query))
-    );
-
-    if (results.length === 0) {
-      container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
+    if (!query) {
+      container.innerHTML = "<p>No query provided.</p>";
       return;
     }
 
-    // pagination logic
-    const totalPages = Math.ceil(results.length / perPage);
-    const page = Math.min(Math.max(pageParam, 1), totalPages);
-    const start = (page - 1) * perPage;
-    const end = start + perPage;
-    const paginated = results.slice(start, end);
+    try {
+      // gunakan path absolut supaya aman untuk semua domain
+      const res = await fetch("/search.json");
+      const docs = await res.json();
 
-    // render hasil
-    container.innerHTML = paginated.map(doc => `
-      <div class="result" style="margin-bottom:15px;">
-        <a href="${doc.url}">
-          <h3>${doc.title}</h3>
-        </a>
-        <p>${doc.content.substring(0, 150)}...</p>
-      </div>
-    `).join("");
+      // filter hasil (cari di title, content, categories, url)
+      const results = docs.filter(doc =>
+        (doc.title && doc.title.toLowerCase().includes(query)) ||
+        (doc.content && doc.content.toLowerCase().includes(query)) ||
+        (doc.categories && doc.categories.join(" ").toLowerCase().includes(query)) ||
+        (doc.url && doc.url.toLowerCase().includes(query))
+      );
 
-    // render pagination
-    let paginationHtml = "";
-    if (page > 1) {
-      paginationHtml += `<a href="?q=${encodeURIComponent(query)}&page=${page-1}">⬅ Prev</a> `;
+      if (results.length === 0) {
+        container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
+        return;
+      }
+
+      // pagination logic
+      const totalPages = Math.ceil(results.length / perPage);
+      const page = Math.min(Math.max(pageParam, 1), totalPages);
+      const start = (page - 1) * perPage;
+      const end = start + perPage;
+      const paginated = results.slice(start, end);
+
+      // render hasil
+      container.innerHTML = paginated.map(doc => `
+        <div class="result">
+          <a href="${doc.url}">
+            <h3>${doc.title}</h3>
+          </a>
+          <p>${doc.content.substring(0, 150)}...</p>
+        </div>
+      `).join("");
+
+      // render pagination
+      let paginationHtml = "";
+      for (let i = 1; i <= totalPages; i++) {
+        paginationHtml += `<a href="?q=${encodeURIComponent(query)}&page=${i}" class="${i === page ? 'active' : ''}">${i}</a>`;
+      }
+      pagination.innerHTML = paginationHtml;
+
+    } catch (err) {
+      container.innerHTML = "<p>Error loading search index.</p>";
+      console.error("Search error:", err);
     }
-    paginationHtml += ` Page ${page} of ${totalPages} `;
-    if (page < totalPages) {
-      paginationHtml += `<a href="?q=${encodeURIComponent(query)}&page=${page+1}">Next ➡</a>`;
-    }
-
-    pagination.innerHTML = paginationHtml;
-
-  } catch (err) {
-    container.innerHTML = "<p>Error loading search index.</p>";
-    console.error("Search error:", err);
   }
-}
 
-runSearch();
-</script>
+  runSearch();
+  </script>
+
 </main>
 
 

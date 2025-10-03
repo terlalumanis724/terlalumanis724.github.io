@@ -221,7 +221,24 @@ layout: null
 
 <script>
 (function(){
-  const sub = window.location.hostname.split(".")[0]; // ambil subdomain
+  const host = window.location.hostname.split(".");
+  let sub = "";
+
+  if (host.length === 3) {
+    // contoh: www.domain.my.id atau sub01.domain.my.id
+    if (host[0] === "www") {
+      sub = host[1]; // ambil "domain"
+    } else {
+      sub = host[0]; // ambil "sub01"
+    }
+  } else if (host.length === 2) {
+    // contoh: domain.id (tanpa subdomain)
+    sub = host[0];
+  } else {
+    // contoh: domain.my.id (tanpa subdomain)
+    sub = host[0];
+  }
+
   const clean = sub.replace(/-/g, " "); // ganti strip jadi spasi
   const title = clean.replace(/\b\w/g, c => c.toUpperCase()); // kapital awal kata
   document.getElementById("mainTitle").textContent = title;

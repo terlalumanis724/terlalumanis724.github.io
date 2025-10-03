@@ -222,20 +222,20 @@ layout: null
 <script>
 (function(){
   const host = window.location.hostname.split(".");
+
   let sub = "";
 
-  if (host.length === 3) {
-    // contoh: www.domain.my.id atau sub01.domain.my.id
-    if (host[0] === "www") {
-      sub = host[1]; // ambil "domain"
-    } else {
-      sub = host[0]; // ambil "sub01"
-    }
-  } else if (host.length === 2) {
-    // contoh: domain.id (tanpa subdomain)
+  if (host[0] === "www") {
+    // www.domain.my.id → ambil host[1]
+    sub = host[1];
+  } else if (host.length === 3) {
+    // domain.my.id → ambil host[0]
+    sub = host[0];
+  } else if (host.length === 4) {
+    // sub01.domain.my.id → ambil host[0]
     sub = host[0];
   } else {
-    // contoh: domain.my.id (tanpa subdomain)
+    // fallback, ambil bagian pertama
     sub = host[0];
   }
 

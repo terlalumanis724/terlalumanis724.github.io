@@ -273,56 +273,108 @@ permalink: /search
 <main>
 
 
-<h2>Search Results</h2>
 <div id="searchResults">Loading...</div>
+<div id="pagination"></div>
 
 <script>
 async function runSearch() {
   const params = new URLSearchParams(window.location.search);
-  const query = (params.get("q") || "").toLowerCase();
+  const query = (params.get("q") || "").toLowerCase().trim();
+  const pageParam = parseInt(params.get("page") || "1", 10);
+
+  const perPage = 10; // jumlah hasil per halaman
+  const container = document.getElementById("searchResults");
+  const pagination = document.getElementById("pagination");
 
   if (!query) {
-    document.getElementById("searchResults").innerHTML = "<p>No query provided.</p>";
+    container.innerHTML = "<p>No query provided.</p>";
     return;
   }
 
-  const res = await fetch("/search.json");
-  const docs = await res.json();
+  try {
+    const res = await fetch("{{ '/search.json' | relative_url }}");
+    const docs = await res.json();
 
-  // Filter results
-  const results = docs.filter(doc =>
-    doc.title.toLowerCase().includes(query) ||
-    doc.content.toLowerCase().includes(query) ||
-    doc.categories.join(" ").toLowerCase().includes(query)
-  );
+    // filter hasil
+    const results = docs.filter(doc =>
+      (doc.title && doc.title.toLowerCase().includes(query)) ||
+      (doc.content && doc.content.toLowerCase().includes(query)) ||
+      (doc.categories && doc.categories.join(" ").toLowerCase().includes(query)) ||
+      (doc.url && doc.url.toLowerCase().includes(query))
+    );
 
-  const container = document.getElementById("searchResults");
-  if (results.length === 0) {
-    container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
-    return;
+    if (results.length === 0) {
+      container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
+      return;
+    }
+
+    // pagination logic
+    const totalPages = Math.ceil(results.length / perPage);
+    const page = Math.min(Math.max(pageParam, 1), totalPages);
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const paginated = results.slice(start, end);
+
+    // render hasil
+    container.innerHTML = paginated.map(doc => `
+      <div class="result" style="margin-bottom:15px;">
+        <a href="${doc.url}">
+          <h3>${doc.title}</h3>
+        </a>
+        <p>${doc.content.substring(0, 150)}...</p>
+      </div>
+    `).join("");
+
+    // render pagination
+    let paginationHtml = "";
+    if (page > 1) {
+      paginationHtml += `<a href="?q=${encodeURIComponent(query)}&page=${page-1}">⬅ Prev</a> `;
+    }
+    paginationHtml += ` Page ${page} of ${totalPages} `;
+    if (page < totalPages) {
+      paginationHtml += `<a href="?q=${encodeURIComponent(query)}&page=${page+1}">Next ➡</a>`;
+    }
+
+    pagination.innerHTML = paginationHtml;
+
+  } catch (err) {
+    container.innerHTML = "<p>Error loading search index.</p>";
+    console.error("Search error:", err);
   }
-
-  // Render results
-  container.innerHTML = results.map(doc => `
-    <div class="result">
-      <a href="${doc.url}">
-        <h3>${doc.title}</h3>
-      </a>
-      <p>${doc.content.substring(0,150)}...</p>
-    </div>
-  `).join("");
 }
 
 runSearch();
 </script>
-
-
 </main>
 
 
 
 
     <br /><br />
+    
+    	<!-- awal search -->
+<div class="widget-search" role="search">
+  <form id="customSearchForm" method="get" action="/search/">
+    <a href="/" id="homeLink" class="home-btn" aria-label="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 24 24" width="22" height="22">
+        <path d="M3 10.5l9-7 9 7V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/>
+      </svg>
+    </a>
+    <input 
+      id="searchInput"
+      type="text"
+      name="q"
+      placeholder="Search..."
+      autocomplete="on"/>
+    <button type="submit" class="search-btn" aria-label="Search">
+      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path d="M21 20l-5.8-5.8a7 7 0 10-1.4 1.4L20 21l1-1zM4 10a6 6 0 1112 0 6 6 0 01-12 0z"/>
+      </svg>
+    </button>
+  </form>
+</div>
+<!-- akhir search -->
+	
 
 <center><pre>ads by Adsterra to keep my blog alive</pre><hr />
 <!--Adsterra by - download-def.blogspot.com - Downloads -->

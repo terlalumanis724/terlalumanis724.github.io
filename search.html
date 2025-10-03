@@ -272,69 +272,49 @@ permalink: /search
 
 <main>
 
-  <h2>Search Results</h2>
-  <div id="results">Loading...</div>
 
-  <script>
-  async function buildIndex() {
-    const res = await fetch("/sitemap.xml");
-    const xml = await res.text();
-    const urls = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
+<h2>Search Results</h2>
+<div id="searchResults">Loading...</div>
 
-    let docs = [];
-    for (let url of urls) {
-      try {
-        const html = await fetch(url).then(r => r.text());
-        const titleMatch = html.match(/<title>(.*?)<\/title>/i);
-        const title = titleMatch ? titleMatch[1] : url;
-        const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
-        docs.push({ id: url, title, content: text, url });
-      } catch(e) {}
-    }
+<script>
+async function runSearch() {
+  const params = new URLSearchParams(window.location.search);
+  const query = (params.get("q") || "").toLowerCase();
 
-    const index = elasticlunr(function () {
-      this.addField('title');
-      this.addField('content');
-      this.setRef('id');
-      docs.forEach(doc => this.addDoc(doc));
-    });
-
-    return { index, docs };
+  if (!query) {
+    document.getElementById("searchResults").innerHTML = "<p>No query provided.</p>";
+    return;
   }
 
-  async function runSearch() {
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("q");
-    const resultsDiv = document.getElementById("results");
+  const res = await fetch("/search.json");
+  const docs = await res.json();
 
-    if (!query) {
-      resultsDiv.innerHTML = "No query given.";
-      return;
-    }
+  // Filter results
+  const results = docs.filter(doc =>
+    doc.title.toLowerCase().includes(query) ||
+    doc.content.toLowerCase().includes(query) ||
+    doc.categories.join(" ").toLowerCase().includes(query)
+  );
 
-    resultsDiv.innerHTML = "Searching for <b>" + query + "</b>...";
-
-    const { index, docs } = await buildIndex();
-    const results = index.search(query, { expand: true });
-
-    if (results.length === 0) {
-      resultsDiv.innerHTML = "No results found.";
-      return;
-    }
-
-    resultsDiv.innerHTML = "";
-    results.forEach(r => {
-      const doc = docs.find(d => d.id === r.ref);
-      if (doc) {
-        const div = document.createElement("div");
-        div.innerHTML = `<a href="${doc.url}"><strong>${doc.title}</strong></a><br><small>${doc.url}</small>`;
-        resultsDiv.appendChild(div);
-      }
-    });
+  const container = document.getElementById("searchResults");
+  if (results.length === 0) {
+    container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
+    return;
   }
 
-  runSearch();
-  </script>
+  // Render results
+  container.innerHTML = results.map(doc => `
+    <div class="result">
+      <a href="${doc.url}">
+        <h3>${doc.title}</h3>
+      </a>
+      <p>${doc.content.substring(0,150)}...</p>
+    </div>
+  `).join("");
+}
+
+runSearch();
+</script>
 
 
 </main>

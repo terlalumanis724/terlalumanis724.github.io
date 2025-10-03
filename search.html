@@ -234,8 +234,8 @@ async function runSearch() {
     if (index === -1) return text.substring(0,150) + "..."; // fallback
 
     // Ambil sekitar 50 huruf sebelum & sesudah keyword
-    const start = Math.max(0, index - 50);
-    const end = Math.min(text.length, index + keyword.length + 50);
+    const start = Math.max(0, index - 150);
+    const end = Math.min(text.length, index + keyword.length + 150);
     let snippet = text.substring(start, end);
 
     // Highlight keyword (case insensitive)
@@ -432,7 +432,7 @@ runSearch();
 	
 	
 
-
+<br /><br /><br />
 
 
 <!-- awal internal linkin (minify) -->

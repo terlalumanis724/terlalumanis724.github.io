@@ -274,94 +274,50 @@ permalink: /search
 
 
 
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .result { margin-bottom: 20px; }
-    .result h3 { margin: 0 0 5px; }
-    .result p { color: #555; }
-    .pagination { margin-top: 20px; }
-    .pagination a {
-      margin: 0 5px;
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      text-decoration: none;
-      color: #333;
-    }
-    .pagination a.active {
-      background: #333;
-      color: #fff;
-    }
-  </style>
-
   <h2>Search Results</h2>
-  <div id="searchResults">Loading...</div>
-  <div id="pagination" class="pagination"></div>
+<div id="searchResults">Loading...</div>
 
-  <script>
-  async function runSearch() {
-    const params = new URLSearchParams(window.location.search);
-    const query = (params.get("q") || "").toLowerCase().trim();
-    const pageParam = parseInt(params.get("page") || "1", 10);
+<script>
+async function runSearch() {
+  // Ambil query dari URL
+  const params = new URLSearchParams(window.location.search);
+  const query = (params.get("q") || "").toLowerCase();
 
-    const perPage = 10; // jumlah hasil per halaman
-    const container = document.getElementById("searchResults");
-    const pagination = document.getElementById("pagination");
-
-    if (!query) {
-      container.innerHTML = "<p>No query provided.</p>";
-      return;
-    }
-
-    try {
-      // gunakan path absolut supaya aman untuk semua domain
-      const res = await fetch("/search.json");
-      const docs = await res.json();
-
-      // filter hasil (cari di title, content, categories, url)
-      const results = docs.filter(doc =>
-        (doc.title && doc.title.toLowerCase().includes(query)) ||
-        (doc.content && doc.content.toLowerCase().includes(query)) ||
-        (doc.categories && doc.categories.join(" ").toLowerCase().includes(query)) ||
-        (doc.url && doc.url.toLowerCase().includes(query))
-      );
-
-      if (results.length === 0) {
-        container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
-        return;
-      }
-
-      // pagination logic
-      const totalPages = Math.ceil(results.length / perPage);
-      const page = Math.min(Math.max(pageParam, 1), totalPages);
-      const start = (page - 1) * perPage;
-      const end = start + perPage;
-      const paginated = results.slice(start, end);
-
-      // render hasil
-      container.innerHTML = paginated.map(doc => `
-        <div class="result">
-          <a href="${doc.url}">
-            <h3>${doc.title}</h3>
-          </a>
-          <p>${doc.content.substring(0, 150)}...</p>
-        </div>
-      `).join("");
-
-      // render pagination
-      let paginationHtml = "";
-      for (let i = 1; i <= totalPages; i++) {
-        paginationHtml += `<a href="?q=${encodeURIComponent(query)}&page=${i}" class="${i === page ? 'active' : ''}">${i}</a>`;
-      }
-      pagination.innerHTML = paginationHtml;
-
-    } catch (err) {
-      container.innerHTML = "<p>Error loading search index.</p>";
-      console.error("Search error:", err);
-    }
+  if (!query) {
+    document.getElementById("searchResults").innerHTML = "<p>No query provided.</p>";
+    return;
   }
 
-  runSearch();
-  </script>
+  // Ambil data dari search.json
+  const res = await fetch("/search.json");
+  const posts = await res.json();
+
+  // Cari kecocokan
+  const results = posts.filter(post =>
+    post.title.toLowerCase().includes(query) ||
+    post.content.toLowerCase().includes(query) ||
+    post.categories.join(" ").toLowerCase().includes(query)
+  );
+
+  // Tampilkan hasil
+  const container = document.getElementById("searchResults");
+  if (results.length === 0) {
+    container.innerHTML = `<p>No results for "<b>${query}</b>".</p>`;
+    return;
+  }
+
+  container.innerHTML = results.map(p => `
+    <div class="result">
+      <a href="${p.url}">
+        <h3>${p.title}</h3>
+      </a>
+      <p>${p.content.substring(0,150)}...</p>
+    </div>
+  `).join("");
+}
+
+runSearch();
+</script>
 
 </main>
 
@@ -696,3 +652,7 @@ permalink: /search
 
 </body>
 </html>
+
+
+
+
